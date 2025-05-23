@@ -123,6 +123,12 @@ const History02 = ({ selectedItem, onBack }) => {
             후처리 내용 보러 가기
           </button>
         </div>
+
+        {/* 버튼 아래 최종 이미지 섹션 */}
+        <div className="final-image-wrapper">
+          <h2 className="final-image-title">최종 이미지</h2>
+          <div className="final-image-box">최종 이미지</div>
+        </div>
       </div>
     </div>
   );
