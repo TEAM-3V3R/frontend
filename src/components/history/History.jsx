@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HistoryCard from "./HistoryCard";
-import HistoryDetail from "./HistoryDetail";
+import History02 from "./History02";
 import "../../styles/History.css";
 
 const History = () => {
@@ -59,6 +59,27 @@ const History = () => {
       tags: ["탱화"],
       prompt: "붉은 연꽃 위에 앉은 관세음보살을 정중앙에 배치해줘.",
     },
+    {
+      imageUrl: "/img/sample1.jpg",
+      createdAt: "2024-05-19 14:32",
+      roomName: "풍경 생성방",
+      tags: ["산수도"],
+      prompt: "깊은 산속에 폭포 아래 피리를 부는 선비를 그려줘.",
+    },
+    {
+      imageUrl: "/img/sample2.jpg",
+      createdAt: "2024-05-20 09:15",
+      roomName: "바다 생성방",
+      tags: ["어해도"],
+      prompt: "거친 파도 위를 떠다니는 물고기 무리를 표현해줘.",
+    },
+    {
+      imageUrl: "/img/sample3.jpg",
+      createdAt: "2024-05-18 11:10",
+      roomName: "불교화",
+      tags: ["탱화"],
+      prompt: "붉은 연꽃 위에 앉은 관세음보살을 정중앙에 배치해줘.",
+    },
   ];
 
   const filteredList = historyList
@@ -75,10 +96,8 @@ const History = () => {
 
   if (selectedItem) {
     return (
-      <HistoryDetail
-        imageUrl={selectedItem.imageUrl}
-        promptCategories={selectedItem.tags}
-        promptText={selectedItem.prompt}
+      <History02
+        selectedItem={selectedItem}
         onBack={() => setSelectedItem(null)}
       />
     );
@@ -88,7 +107,6 @@ const History = () => {
     <div className="history-wrapper">
       <div className="history-scroll">
         <div className="history-top">
-          {/* 태그 버튼 그룹 */}
           <div className="tag-button-group">
             {allTags.map((tag) => {
               const isSelected = selectedTags.includes(tag);
@@ -107,7 +125,6 @@ const History = () => {
             })}
           </div>
 
-          {/* 정렬 선택 */}
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
