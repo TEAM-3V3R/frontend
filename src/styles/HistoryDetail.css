@@ -1,0 +1,67 @@
+/* 히스토리 카드 전체 묶음 */
+.history-card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* 카드 박스 */
+.history-card {
+  border: 1px solid #f5f5f5;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* 상단 텍스트 */
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 이미지 영역 */
+.history-card-image {
+  height: 140px;
+  background-color: #2b2b2b;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 하단 내용 영역 */
+.history-card-bottom {
+  background-color: #f8f8f8;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.prompt-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.expand-arrow {
+  font-size: 12px;
+  color: #666;
+}
+
+.tag-chip {
+  background-color: #dcdcdc;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.prompt-text {
+  color: #333;
+  line-height: 1.4;
+}
