@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import HistoryCard from "./HistoryCard";
 import HistoryDetail from "./HistoryDetail";
+import "../../styles/History.css";
 
 const History = () => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -20,7 +21,7 @@ const History = () => {
       imageUrl: "/img/sample1.jpg",
       createdAt: "2024-05-19 14:32",
       roomName: "풍경 생성방",
-      tags: ["산수도", "AI 생성"],
+      tags: ["산수도"],
       prompt: "깊은 산속에 폭포 아래 피리를 부는 선비를 그려줘.",
     },
     {
@@ -41,7 +42,7 @@ const History = () => {
       imageUrl: "/img/sample1.jpg",
       createdAt: "2024-05-19 14:32",
       roomName: "풍경 생성방",
-      tags: ["산수도", "AI 생성"],
+      tags: ["산수도"],
       prompt: "깊은 산속에 폭포 아래 피리를 부는 선비를 그려줘.",
     },
     {
@@ -84,85 +85,71 @@ const History = () => {
   }
 
   return (
-    <div
-      style={{
-        width: "1000px",
-        height: "600px",
-        backgroundColor: "#f5f5f5",
-        borderRadius: "16px",
-        padding: "24px",
-        margin: "40px auto",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* 내부 스크롤 영역 */}
-      <div style={{ flex: 1, overflowY: "auto" }}>
-        {/* 태그 + 정렬 */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "10px",
-            marginBottom: "20px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "10px" }}>
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => toggleTag(tag)}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: "16px",
-                  backgroundColor: selectedTags.includes(tag)
-                    ? "#007bff"
-                    : "#eee",
-                  color: selectedTags.includes(tag) ? "#fff" : "#333",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                {tag}
-              </button>
-            ))}
+    <div className="history-wrapper">
+      <div className="history-scroll">
+        <div className="history-top">
+          {/* 태그 버튼 그룹 */}
+          <div className="tag-button-group">
+            {allTags.map((tag) => {
+              const isSelected = selectedTags.includes(tag);
+              const className = `tag-button ${
+                isSelected ? `selected-${tag}` : ""
+              }`;
+              return (
+                <button
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  className={className}
+                >
+                  {tag}
+                </button>
+              );
+            })}
           </div>
 
+          {/* 정렬 선택 */}
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
-            style={{
-              padding: "6px 10px",
-              fontSize: "14px",
-              marginLeft: "80px",
-            }}
+            className="select-button"
           >
             <option value="latest">최신순</option>
             <option value="oldest">과거순</option>
           </select>
         </div>
 
-        <hr style={{ marginBottom: "20px", borderTop: "1px solid #ccc" }} />
+        <hr className="history-divider" />
 
-        {/* 카드 목록 */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-          {filteredList.map((item, index) => (
-            <div
-              key={index}
-              onClick={() => setSelectedItem(item)}
-              style={{ cursor: "pointer" }}
-            >
-              <HistoryCard
-                imageUrl={item.imageUrl}
-                createdAt={item.createdAt}
-                roomName={item.roomName}
-                tags={item.tags}
-              />
-            </div>
-          ))}
-        </div>
+        {filteredList.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              color: "#333",
+              fontSize: "16px",
+              padding: "40px 0",
+              paddingTop: "200px",
+            }}
+          >
+            해당 태그와 관련한 히스토리가 아직 존재하지 않습니다.
+          </div>
+        ) : (
+          <div className="history-card-list">
+            {filteredList.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => setSelectedItem(item)}
+                style={{ cursor: "pointer" }}
+              >
+                <HistoryCard
+                  imageUrl={item.imageUrl}
+                  createdAt={item.createdAt}
+                  roomName={item.roomName}
+                  tags={item.tags}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

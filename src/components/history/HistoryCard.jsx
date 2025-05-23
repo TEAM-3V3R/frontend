@@ -4,10 +4,11 @@ const HistoryCard = ({ imageUrl, createdAt, roomName, tags }) => {
   return (
     <div
       style={{
-        border: "1px solid #ddd",
+        border: "1px solid #f5f5f5",
         borderRadius: "10px",
         overflow: "hidden",
-        width: "300px",
+        width: "220px",
+        height: "250px",
         boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
       }}
     >
@@ -38,7 +39,7 @@ const HistoryCard = ({ imageUrl, createdAt, roomName, tags }) => {
             <span
               key={i}
               style={{
-                backgroundColor: "#eef",
+                backgroundColor: "#f5f5f5",
                 padding: "2px 8px",
                 borderRadius: "12px",
                 fontSize: "11px",
