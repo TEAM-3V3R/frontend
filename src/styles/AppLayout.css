@@ -1,0 +1,121 @@
+/* =========================
+   📌 전체 레이아웃 공통 설정
+========================= */
+body {
+  margin: 0;
+  font-family: 'Pretendard', sans-serif;
+  background-color: #000; /* 메인 페이지 배경을 검정색으로 */
+  color: white;
+}
+
+/* 앱 전체 컨테이너 (화면 폭 제한 + 중앙 정렬) */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%; /* ✅ 추가 */
+}
+
+.app-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-content {
+  flex: 1;
+  padding: 0 20px;
+  overflow-y: auto;
+}
+
+
+/* =========================
+   📌 왼쪽 이미지 패널
+========================= */
+.left-panel {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding-top: 20px;
+}
+
+.left-panel img {
+  width: 60px;
+  height: 90px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+
+/* =========================
+   📌 상단 네비게이션 바
+========================= */
+.top-nav {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.top-nav-container {
+  background-color: white;
+  border-radius: 40px;
+  /* padding: 5px; */
+  display: flex;
+  gap: 10px;
+}
+
+.nav-item {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 40px;
+  transition: all 0.3s ease;
+}
+
+.nav-item.active {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+
+
+/* =========================
+   📌 오른쪽 로그인 패널
+========================= */
+.login-panel {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  gap: 15px;
+}
+
+.login-panel input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+.login-panel button {
+  background-color: #ff4d4d;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-panel .signup {
+  font-size: 0.8rem;
+  color: #aaa;
+  cursor: pointer;
+  text-decoration: underline;
+}
