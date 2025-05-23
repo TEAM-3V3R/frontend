@@ -111,6 +111,18 @@ const History02 = ({ selectedItem, onBack }) => {
           imageUrl={selectedItem.imageUrl}
           promptHistoryList={promptHistoryList}
         />
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "40px",
+          }}
+        >
+          <button className="history-report-button">
+            후처리 내용 보러 가기
+          </button>
+        </div>
       </div>
     </div>
   );
