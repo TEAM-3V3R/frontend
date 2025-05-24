@@ -52,7 +52,7 @@ const HistoryDetail = ({ promptHistoryList }) => {
                   ))}
                 </div>
 
-                {isExpanded && (
+                {isExpanded ? (
                   <div className="expanded-category-box">
                     {item.keywords.map((kw, i) => (
                       <div key={i} className="expanded-tag">
@@ -60,9 +60,9 @@ const HistoryDetail = ({ promptHistoryList }) => {
                       </div>
                     ))}
                   </div>
+                ) : (
+                  <div className="prompt-text">{item.text}</div>
                 )}
-
-                <div className="prompt-text">{item.text}</div>
               </div>
             </div>
           );
