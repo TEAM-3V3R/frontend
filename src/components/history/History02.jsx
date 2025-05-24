@@ -62,7 +62,7 @@ const History02 = ({ selectedItem, onBack }) => {
       {
         date: "05-20",
         time: "10:10",
-        keywords: ["바다", "물결"],
+        keywords: ["바다", "물결", "물고기", "물고기01", "물고기02"],
         text: "거친 파도 위를 떠다니는 물고기 무리를 표현해줘.",
       },
       {

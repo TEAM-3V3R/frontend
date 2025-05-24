@@ -99,3 +99,29 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+.expand-arrow {
+  font-size: 12px;
+  margin-right: 4px;
+  color: #666;
+  cursor: pointer;
+}
+
+.expanded-category-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: #47b290;
+  border-radius: 16px;
+  padding: 10px;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+.expanded-tag {
+  background-color: white;
+  color: #333;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
