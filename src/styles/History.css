@@ -26,6 +26,7 @@
 .tag-button-group {
   display: flex;
   gap: 10px;
+  padding: 2px;
 }
 
 .tag-button {
@@ -52,13 +53,30 @@
   background-color: #F44B40;
   color: #f5f5f5;
 }
+/*
+.history-divider {
+  height: 1px;
+  background-color: red;
+  color: white;
+  border: none;
+  margin: 16px 0; 
+  padding-bottom: 30px;
+} */
 
 .history-divider {
   height: 1px;
-  background-color: white;
   border: none;
-  margin: 16px 0; /* 상하 여백 */
+  border-top: 1px solid #ffffff;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-top: 30px;
+  margin-bottom: 0;
+  /* padding-top: 50px; */
+  padding-bottom: 30px; /* ✅ 정확한 단위! */
 }
+
 
 .history-card-list {
   display: flex;
@@ -89,6 +107,8 @@
   line-height: 1;
   padding-right: 36px; /* 화살표 공간 확보 */
   box-shadow: none;
+
+  /* padding: bottom 30px; */
 }
 
 /* History02 상단 영역 */
@@ -96,7 +116,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  /* padding: 10px 0; */
 }
 
 .history02-title-left {
@@ -135,11 +155,12 @@
 }
 
 /* 구분선 */
-.history-divider {
+/* .history-divider {
   border: none;
   border-top: 1px solid #ffffff;
   margin: 12px 0;
-}
+  padding-bottom: 30;
+} */
 
 .history-report-button {
   background-color: #007bff;
@@ -156,7 +177,7 @@
 }
 
 .history-report-button:hover {
-  background-color: #0056d2;
+  background-color: #2677F4;
 }
 
 .final-image-wrapper {

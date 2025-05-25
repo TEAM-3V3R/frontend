@@ -50,7 +50,17 @@ const HistoryDetail = ({ promptHistoryList }) => {
                 </div>
 
                 {isExpanded ? (
-                  <div className="expanded-category-box">
+                  <div
+                    className={`expanded-category-box ${
+                      item.keywords.includes("산수도")
+                        ? "bg-산수도"
+                        : item.keywords.includes("어해도")
+                        ? "bg-어해도"
+                        : item.keywords.includes("탱화")
+                        ? "bg-탱화"
+                        : ""
+                    }`}
+                  >
                     {item.keywords.map((kw, i) => (
                       <div key={i} className="expanded-tag">
                         {kw}

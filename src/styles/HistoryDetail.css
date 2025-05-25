@@ -62,6 +62,7 @@
 
 .tag-chip {
   background-color: #dcdcdc;
+  color: #666;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 12px;
@@ -82,8 +83,8 @@
   margin-top: 10px;
   justify-content: flex-start;
   position: relative;
-  /* ❌ 아래 줄 제거하거나 주석 처리 */
   /* background-color: #47b290; */
+  background-color: #dcdcdc;
 }
 
 
