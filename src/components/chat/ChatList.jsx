@@ -1,18 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../styles/Chat.css";
 
-const ChatList = () => {
-  const [rooms, setRooms] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-
-  const handleNewChat = () => {
-    const count = rooms.filter((room) => room.startsWith("새 채팅")).length;
-
-    const newRoomName = `새 채팅 ${count + 1}`;
-    setRooms([newRoomName, ...rooms]);
-    setSelectedIndex(0);
-  };
-
+const ChatList = ({
+  rooms,
+  selectedIndex,
+  setSelectedIndex,
+  handleNewChat,
+}) => {
   return (
     <div className="chat-list">
       <button className="chat-new-btn" onClick={handleNewChat}>
