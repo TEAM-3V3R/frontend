@@ -42,10 +42,43 @@
   border-radius: 15px; /* 완전 둥글게 */
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-bottom: 16px;
 }
 
 .chat-new-btn:hover {
   background-color: #1a5edc; /* hover 시 더 진한 파랑 */
+}
+
+.chat-room-btn {
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.chat-room-btn.selected {
+  background-color: #333333;
+  color: white;
+}
+
+.chat-room-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.chat-list-ul {
+  list-style: none;   
+  padding: 0;         
+  margin: 0;          
 }
 
 /* ChatWindow */
