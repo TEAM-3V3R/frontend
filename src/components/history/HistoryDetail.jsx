@@ -15,9 +15,6 @@ const HistoryDetail = ({ promptHistoryList }) => {
       <div className="history-card-list">
         {promptHistoryList.map((item, index) => {
           const isExpanded = expandedIndex === index;
-          //   const visibleKeywords = isExpanded
-          //     ? item.keywords
-          //     : item.keywords.slice(0, 2);
 
           return (
             <div

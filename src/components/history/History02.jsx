@@ -91,7 +91,7 @@ const History02 = ({ selectedItem, onBack }) => {
           <div className="history02-title-left">
             <span className="history02-room-name">{selectedItem.roomName}</span>
             {selectedItem.tags.map((tag, idx) => (
-              <span key={idx} className={`tag-chip tag-${tag}`}>
+              <span key={idx} className={`history02-category-tag ${tag}`}>
                 {tag}
               </span>
             ))}
@@ -110,6 +110,7 @@ const History02 = ({ selectedItem, onBack }) => {
         <HistoryDetail
           imageUrl={selectedItem.imageUrl}
           promptHistoryList={promptHistoryList}
+          //   categoryColorClass={`bg-${representativeTag}`}
         />
 
         <div

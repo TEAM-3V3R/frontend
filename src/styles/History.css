@@ -108,7 +108,7 @@
 .history02-room-name {
   font-size: 24px;
   font-weight: bold;
-  color: #111;
+  color: #333;
 }
 
 .history02-title-right {
@@ -183,4 +183,27 @@
   color: white;
   font-size: 20px;
   font-weight: bold;
+}
+
+/* 키워드 태그 공통 스타일 */
+.history02-category-tag {
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* 카테고리별 색상 지정 */
+.history02-category-tag.산수도 {
+  background-color: #47B290;
+}
+
+.history02-category-tag.어해도 {
+  background-color: #2677F4;
+}
+
+.history02-category-tag.탱화 {
+  background-color: #F44B40;
 }
