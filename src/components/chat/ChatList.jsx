@@ -1,24 +1,16 @@
-// src/components/ChatList.jsx
 import React from "react";
+import "../../styles/Chat.css";
 
 const ChatList = () => {
+  const handleNewChat = () => {
+    alert("새 채팅");
+  };
+
   return (
-    <div
-      style={{
-        height: "100%",
-        backgroundColor: "rgba(231, 231, 231, 0.8)",
-        borderRadius: "16px",
-        padding: "16px",
-        boxSizing: "border-box",
-        overflowY: "auto",
-      }}
-    >
-      <h4>채팅 목록</h4>
-      <ul>
-        <li>방 1</li>
-        <li>방 2</li>
-        <li>방 3</li>
-      </ul>
+    <div className="chat-list">
+      <button className="chat-new-btn" onClick={handleNewChat}>
+        +&nbsp;&nbsp;새 채팅
+      </button>
     </div>
   );
 };

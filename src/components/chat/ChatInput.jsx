@@ -1,25 +1,13 @@
-// src/components/ChatInput.jsx
 import React from "react";
+import "../../styles/Chat.css";
 
 const ChatInput = () => {
   return (
-    <div
-      style={{
-        backgroundColor: "rgba(231, 231, 231, 0.8)",
-        borderRadius: "16px",
-        padding: "10px",
-      }}
-    >
+    <div className="chat-input">
       <input
         type="text"
         placeholder="메시지를 입력하세요..."
-        style={{
-          width: "100%",
-          padding: "10px",
-          boxSizing: "border-box",
-          borderRadius: "8px",
-          border: "1px solid #aaa",
-        }}
+        className="chat-input-box"
       />
     </div>
   );
