@@ -7,6 +7,7 @@ import "../../styles/Chat.css";
 const Chat = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [tagByRoom, setTagByRoom] = useState({}); // 각 방별 선택된 태그 저장
 
   const handleNewChat = () => {
     const count = rooms.filter((room) => room.startsWith("새 채팅")).length;
@@ -14,6 +15,15 @@ const Chat = () => {
     setRooms([newRoom, ...rooms]);
     setSelectedIndex(0);
   };
+
+  const handleTagSelect = (roomName, tag) => {
+    setTagByRoom((prev) => ({
+      ...prev,
+      [roomName]: tag,
+    }));
+  };
+
+  const selectedRoom = rooms[selectedIndex];
 
   return (
     <div className="chat-wrapper">
@@ -26,7 +36,11 @@ const Chat = () => {
         />
       </div>
       <div className="chat-main-container">
-        <ChatWindow room={rooms[selectedIndex]} />
+        <ChatWindow
+          room={selectedRoom}
+          selectedTag={tagByRoom[selectedRoom]}
+          onTagSelect={(tag) => handleTagSelect(selectedRoom, tag)}
+        />
         <ChatInput />
       </div>
     </div>

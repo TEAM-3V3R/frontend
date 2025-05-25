@@ -116,6 +116,18 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* .chat-tag.selected {
+
+} */
+
+.chat-tag.disabled {
+  background-color: #cccccc !important;
+  color: #666 !important;
+  cursor: default;
+  pointer-events: none;
+}
+
+
 /* 태그별 색상 */
 .tag-산수도 {
   background-color: #45b191;
