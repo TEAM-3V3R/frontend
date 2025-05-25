@@ -1,0 +1,230 @@
+.history-wrapper {
+  width: 1000px;
+  height: 600px;
+  background-color: rgba(231, 231, 231, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 40px auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.history-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.history-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-bottom: 20px;
+}
+
+.tag-button-group {
+  display: flex;
+  gap: 10px;
+  padding: 2px;
+}
+
+.tag-button {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  color: #333;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.tag-button.selected-산수도 {
+  background-color: #47B290;
+  color: #f5f5f5;
+}
+
+.tag-button.selected-어해도 {
+  background-color: #2677F4;
+  color: #f5f5f5;
+}
+
+.tag-button.selected-탱화 {
+  background-color: #F44B40;
+  color: #f5f5f5;
+}
+/*
+.history-divider {
+  height: 1px;
+  background-color: red;
+  color: white;
+  border: none;
+  margin: 16px 0; 
+  padding-bottom: 30px;
+} */
+
+.history-divider {
+  height: 1px;
+  border: none;
+  border-top: 1px solid #ffffff;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-top: 30px;
+  margin-bottom: 0;
+  /* padding-top: 50px; */
+  padding-bottom: 30px; /* ✅ 정확한 단위! */
+}
+
+
+.history-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.select-button {
+  padding: 0px 10px;
+  border-radius: 28px;
+  border: none;
+  background-color: #f5f5f5;
+  color: #333;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512'%3E%3Cpath fill='black' d='M31.5 192h257c28.4 0 42.8 34.5 22.6 54.6l-128 128c-12.5 12.5-32.8 12.5-45.3 0l-128-128C-11.3 226.5 3.1 192 31.5 192z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+
+  height: 27px;
+  line-height: 1;
+  padding-right: 36px; /* 화살표 공간 확보 */
+  box-shadow: none;
+
+  /* padding: bottom 30px; */
+}
+
+/* History02 상단 영역 */
+.history02-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 10px 0; */
+}
+
+.history02-title-left {
+  display: flex;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.history02-room-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.history02-title-right {
+  display: flex;
+  align-items: center;
+  gap: 10px 10px;
+}
+
+.history02-back-icon {
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+}
+
+.history02-report-button {
+  background-color: #47b290;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 구분선 */
+/* .history-divider {
+  border: none;
+  border-top: 1px solid #ffffff;
+  margin: 12px 0;
+  padding-bottom: 30;
+} */
+
+.history-report-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s ease;
+  margin-top: 30px;
+}
+
+.history-report-button:hover {
+  background-color: #2677F4;
+}
+
+.final-image-wrapper {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.final-image-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.final-image-box {
+  background-color: #221f26;
+  border-radius: 24px;
+  height: 450px;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 키워드 태그 공통 스타일 */
+.history02-category-tag {
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* 카테고리별 색상 지정 */
+.history02-category-tag.산수도 {
+  background-color: #47B290;
+}
+
+.history02-category-tag.어해도 {
+  background-color: #2677F4;
+}
+
+.history02-category-tag.탱화 {
+  background-color: #F44B40;
+}

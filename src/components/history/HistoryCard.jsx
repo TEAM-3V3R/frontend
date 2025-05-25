@@ -1,54 +1,42 @@
 import React from "react";
+import "../../styles/HistoryCard.css";
 
 const HistoryCard = ({ imageUrl, createdAt, roomName, tags }) => {
+  const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const tagColorMap = {
+    산수도: "#47B290",
+    어해도: "#2677F4",
+    탱화: "#F44B40",
+  };
+
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        overflow: "hidden",
-        width: "300px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      }}
-    >
-      {/* 위쪽: 이미지 */}
-      <div style={{ height: "200px", overflow: "hidden" }}>
-        <img
-          src={imageUrl}
-          alt="생성 이미지"
-          style={{ width: "100%", objectFit: "cover", height: "100%" }}
-        />
+    <div className="history-card">
+      <div className="history-card-image">
+        <img src={imageUrl} alt="생성 이미지" />
       </div>
 
-      {/* 아래쪽: 설명 */}
-      <div style={{ padding: "12px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "8px",
-            marginBottom: "6px",
-            fontSize: "12px",
-            color: "#555",
-          }}
-        >
-          <span>{createdAt}</span>
+      <div className="history-card-info">
+        <div className="history-card-meta">
+          <span>{formattedDate}</span>
           {tags.map((tag, i) => (
             <span
               key={i}
+              className="history-card-tag"
               style={{
-                backgroundColor: "#eef",
-                padding: "2px 8px",
-                borderRadius: "12px",
-                fontSize: "11px",
+                backgroundColor: tagColorMap[tag] || "#f5f5f5",
+                color: "#f5f5f5",
               }}
             >
               {tag}
             </span>
           ))}
         </div>
-        <div style={{ fontSize: "13px", color: "#333" }}>
+        <div className="history-card-room">
           <strong>{roomName}</strong>
         </div>
       </div>
