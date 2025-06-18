@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './page/home';
 import Layout from './components/Layout';
+import SignUp from './page/signup';
+import Demo from './page/demo';
 
 export default function Router() {
   return (
@@ -10,8 +12,8 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Home />} />
           <Route path="/history" element={<Home />} />
-          <Route path="/demo" element={<Home />} />
-          <Route path="/register" element={<Home />} />
+          <Route path="/demo" element={<Demo />} />
+          <Route path="/register" element={<SignUp />} />
         </Route>
       </Routes>
     </BrowserRouter>
