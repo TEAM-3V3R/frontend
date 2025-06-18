@@ -2,11 +2,11 @@ import styles from './Layout.module.scss';
 import Logo from '@/assets/logo.png';
 import MainBG from '@/assets/mainBG.png';
 import BaseBG from '@/assets/baseBG.png';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import MenuBar from '../menubar';
 import Profile from '../profile';
 
-function Layout({ children }) {
+function Layout() {
   const bg = window.location.pathname === '/' ? MainBG : BaseBG;
   const navigate = useNavigate();
   const handleLogoClick = () => {
@@ -30,7 +30,7 @@ function Layout({ children }) {
       </div>
       <div className={styles.content}>
         <MenuBar />
-        {children}
+        <Outlet />
       </div>
       <div className={styles.profile}>
         <Profile />
