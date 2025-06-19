@@ -1,0 +1,26 @@
+.keywordButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 120% */
+  padding: 13px 20px;
+  border-radius: 25px;
+}
+
+.green {
+  background: var(--ButtonC_final, #47b290);
+}
+.blue {
+  background: var(--ButtonB_final, #2677f4);
+}
+.red {
+  background: var(--ButtonA_final, #f44b40);
+}
+
+.disabled {
+  background: var(--Light-Button, #e5e5e5);
+}

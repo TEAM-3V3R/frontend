@@ -1,13 +1,60 @@
 import { useForm } from 'react-hook-form';
 import styles from './signup.module.scss';
+import { postSignin } from '@/api/authUser';
+import { useNavigate } from 'react-router-dom';
+import { getCheckId } from '@/api/authAPI';
+import { useEffect, useState } from 'react';
 function SignUp() {
+  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const validateID = async (id) => {
+    try {
+      const response = await getCheckId(id);
+      if (response.data) {
+        alert('사용 가능한 ID입니다.');
+        setIsChecked(true);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error checking ID:', error);
+      alert('ID 중복 확인에 실패했습니다. 다른 아이디로 시도해주세요.');
+      return false;
+    }
+  };
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === 'ID') {
+        setIsChecked(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  const onSubmit = async (data) => {
+    try {
+      const signupData = {
+        id: data.ID,
+        nickName: data.name,
+      };
+      const res = await postSignin(signupData);
+      if (res.data) {
+        alert('회원가입에 성공했습니다.');
+        localStorage.setItem('isLogin', 'true');
+        localStorage.setItem('userNo', res.data.data.userId);
+        navigate('/');
+      }
+    } catch (error) {
+      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+      console.error('Error during signup:', error);
+    }
   };
   return (
     <div className={styles.content}>
@@ -34,7 +81,9 @@ function SignUp() {
                   if (!isValidChars) {
                     return 'ID에 특수기호 사용은 불가능합니다.';
                   }
-                  // 중복체크까지
+                  if (!isChecked) {
+                    return 'ID 중복 확인을 해주세요.';
+                  }
                   return true;
                 },
               })}
@@ -43,8 +92,16 @@ function SignUp() {
               type="button"
               className={styles.doubleCheckBtn}
               onClick={() => {
-                // 중복 체크 로직 추가
-                console.log('중복 체크');
+                const id = watch('ID');
+                if (!id) {
+                  alert('ID를 입력해주세요.');
+                  return;
+                }
+                if (isChecked) {
+                  alert('이미 중복 확인을 했습니다.');
+                  return;
+                }
+                validateID(id);
               }}
             >
               중복 확인
