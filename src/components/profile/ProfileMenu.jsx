@@ -11,7 +11,7 @@ function ProfileMenu() {
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        const res = await getFindUser(userNo);
+        const res = await getFindUser();
         if (res.data) {
           setUserData(res.data.data);
         }
@@ -27,7 +27,7 @@ function ProfileMenu() {
 
   const handleLogout = async () => {
     try {
-      await postLogout({ idName: userNo });
+      await postLogout({ id: userNo });
       localStorage.removeItem('isLogin');
       localStorage.removeItem('userNo');
       window.location.reload();

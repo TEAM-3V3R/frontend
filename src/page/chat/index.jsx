@@ -1,52 +1,138 @@
 import Keyword from '@/components/keyword';
 import styles from './chat.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import send from '@/assets/send.svg';
 import ChatButton from '@/components/chatbutton';
 import AI from '@/components/chat/ai';
 import My from '@/components/chat/my';
+import {
+  getChat,
+  getChatHistory,
+  patchChatTitle,
+  postChat,
+} from '@/api/chatAPI';
+import { Fragment } from 'react';
 
 const keywords = [
   { keyword: '산수도', bgColor: 'green' },
   { keyword: '어해도', bgColor: 'blue' },
   { keyword: '탱화', bgColor: 'red' },
 ];
-const mockData = [
-  { title: '산수도', content: '산수도에 대한 내용입니다.' },
-  { title: '어해도', content: '어해도에 대한 내용입니다.' },
-  { title: '탱화', content: '탱화에 대한 내용입니다.' },
-];
 
 function Chat() {
-  const [selectedKeyword, setSelectedKeyword] = useState(null);
-  const [chatHistory, setChatHistory] = useState(mockData);
-  const [currentChat, setCurrentChat] = useState(chatHistory[0].title);
+  const userNo = localStorage.getItem('userNo');
+  const [selectedKeyword, setSelectedKeyword] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [currentChat, setCurrentChat] = useState(chatHistory[0]?.chatId || '');
+  const [isNewChat, setIsNewChat] = useState(false);
+
+  const [chatInfo, setChatInfo] = useState(null);
+
   //   console.log(chatHistory);
-  const handleChangeTitle = (oldTitle, newTitle) => {
+  const handleChangeTitle = async (oldTitle, newTitle, chatId) => {
     setChatHistory((prev) =>
       prev.map((chat) =>
-        chat.title === oldTitle ? { ...chat, title: newTitle } : chat
+        chat.chatId === chatId ? { ...chat, chatTitle: newTitle } : chat
       )
     );
 
-    // 현재 선택된 채팅일 경우 currentChat도 변경
     if (currentChat === oldTitle) {
-      setCurrentChat(newTitle);
+      setCurrentChat(chatId);
+    }
+    try {
+      const res = await patchChatTitle(chatId, newTitle);
+      if (res.status === 200) {
+        alert('채팅 제목이 변경되었습니다.');
+      }
+    } catch (error) {
+      console.error('Error updating chat title:', error);
+      alert('채팅 제목 변경에 실패했습니다.');
     }
   };
+
+  const handleNewChat = () => {
+    setChatHistory((prev) => [
+      ...prev,
+      { chatId: 0, chatTitle: '새 채팅', promptContent: '' },
+    ]);
+    setCurrentChat(0);
+    setIsNewChat(true);
+  };
+  const postNewChatRoom = async (paints) => {
+    try {
+      const res = await postChat(paints);
+      if (res.status === 200) {
+        setChatHistory((prev) => [
+          ...prev.slice(0, -1),
+          {
+            chatId: res.data.data.chatId,
+            chatTitle: '',
+            promptContent: '',
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error('Error creating new chat:', error);
+      alert('새 채팅 생성에 실패했습니다.');
+    }
+  };
+  useEffect(() => {
+    const getChatHistoryData = async () => {
+      try {
+        const res = await getChatHistory();
+        if (res.status === 200) {
+          setChatHistory(res.data.data);
+          setCurrentChat(res.data.data[0]?.chatId || '');
+        }
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
+      }
+    };
+    getChatHistoryData();
+  }, [userNo]);
+
+  useEffect(() => {
+    const fetchChatInfo = async () => {
+      if (currentChat && currentChat !== '새 채팅') {
+        try {
+          const res = await getChat(currentChat);
+          if (res.status === 200) {
+            setChatInfo(res.data.data[0]);
+            setSelectedKeyword(res.data.data[0]?.paints || '');
+          }
+        } catch (error) {
+          console.error('Error fetching chat info:', error);
+          alert('채팅 정보를 불러오는 데 실패했습니다.');
+        }
+      }
+    };
+    fetchChatInfo();
+  }, [currentChat]);
+  useEffect(() => {
+    if (isNewChat) {
+      setSelectedKeyword('');
+      setChatInfo(null);
+      setCurrentChat('새 채팅');
+    }
+  }, [isNewChat]);
+
   return (
     <>
       <div className={styles.content}>
         <div className={styles.side}>
-          <button className={styles.chatBtn}>+ 새 채팅</button>
+          <button className={styles.chatBtn} onClick={handleNewChat}>
+            + 새 채팅
+          </button>
           <div className={styles.chatList}>
             {chatHistory.map((item) => (
               <ChatButton
-                key={item.title}
-                onClick={() => setCurrentChat(item.title)}
-                isSelected={currentChat === item.title}
-                title={item.title}
-                onChange={(newTitle) => handleChangeTitle(item.title, newTitle)}
+                key={item.chatId}
+                onClick={() => setCurrentChat(item.chatId)}
+                isSelected={currentChat === item.chatId}
+                title={item.chatTitle || item.promptContent}
+                onChange={(newTitle) =>
+                  handleChangeTitle(item.chatTitle, newTitle, item.chatId)
+                }
               />
             ))}
           </div>
@@ -59,7 +145,13 @@ function Chat() {
                   <Keyword
                     key={item.keyword}
                     keyword={item.keyword}
-                    onClick={() => setSelectedKeyword(item.keyword)}
+                    onClick={() => {
+                      if (isNewChat) {
+                        setSelectedKeyword(item.keyword);
+                        postNewChatRoom(item.keyword);
+                        setIsNewChat(false);
+                      }
+                    }}
                     isSelected={selectedKeyword === item.keyword}
                     bgColor={item.bgColor}
                   />
@@ -73,24 +165,12 @@ function Chat() {
               />
             </div>
             <div className={styles.chatviewContent}>
-              <My chat="음뵈모가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/Gt0BWfQXgAAafUo?format=jpg&name=large" />
-              <My chat="쿠냐가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/GtVSA90XAAE6zEW?format=jpg&name=small" />
-              <My chat="우리 주장님 트로피든 사진" />
-              <AI imgUrl="https://pbs.twimg.com/media/Gs9J4q3WgAA8HP4?format=jpg&name=small" />
-              <My chat="음뵈모가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/Gt0BWfQXgAAafUo?format=jpg&name=large" />
-              <My chat="쿠냐가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/GtVSA90XAAE6zEW?format=jpg&name=small" />
-              <My chat="우리 주장님 트로피든 사진" />
-              <AI imgUrl="https://pbs.twimg.com/media/Gs9J4q3WgAA8HP4?format=jpg&name=small" />
-              <My chat="음뵈모가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/Gt0BWfQXgAAafUo?format=jpg&name=large" />
-              <My chat="쿠냐가 맨유옷을 입고있는 사진." />
-              <AI imgUrl="https://pbs.twimg.com/media/GtVSA90XAAE6zEW?format=jpg&name=small" />
-              <My chat="우리 주장님 트로피든 사진" />
-              <AI imgUrl="https://pbs.twimg.com/media/Gs9J4q3WgAA8HP4?format=jpg&name=small" />
+              {chatInfo?.prompts.map((prompt, index) => (
+                <Fragment key={index}>
+                  <My chat={prompt.promptContent} />
+                  <AI imgUrl={prompt.imageUrl} />
+                </Fragment>
+              ))}
             </div>
           </div>
           <div className={styles.chatInputWrapper}>

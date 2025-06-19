@@ -1,9 +1,12 @@
 import axios from 'axios';
 
+const userNo = localStorage.getItem('userNo') || '';
+
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'user-no': userNo,
   },
 });
 instance.interceptors.request

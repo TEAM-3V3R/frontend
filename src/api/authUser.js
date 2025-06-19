@@ -10,27 +10,24 @@ export const postSignin = (data) => {
   });
 };
 
-export const getFindUser = (userNo) => {
+export const getFindUser = () => {
   return instance({
     method: 'get',
     url: API_USER.find,
-    headers: { 'user-no': userNo },
   });
 };
 
-export const deleteUser = (userNo) => {
+export const deleteUser = () => {
   return instance({
     method: 'delete',
     url: API_USER.delete,
-    headers: { 'user-no': userNo },
   });
 };
 
-export const putUpdateUser = (data, userNo) => {
+export const putUpdateUser = (data) => {
   return instance({
     method: 'put',
     url: API_USER.update,
     data,
-    headers: { 'user-no': userNo },
   });
 };
