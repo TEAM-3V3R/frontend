@@ -1,13 +1,13 @@
 .content {
   width: 100%;
-  height: 100%; //calc(100vh - 154px);
+  height: calc(100vh - 154px);
   display: flex;
   padding: 0 200px 43px 200px;
 }
 //side
 .side {
   flex: 1;
-  height: 100%;
+
   display: flex;
   padding: 14px 16px;
   flex-direction: column;
@@ -37,7 +37,7 @@
 // main
 .main {
   flex: 4;
-  height: 100%;
+  max-height: calc(100vh - 154px);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -45,13 +45,13 @@
 }
 
 .chatview {
-  flex: 10;
   display: flex;
   flex-direction: column;
   border-radius: 30px;
   border: 0px solid #e5e7eb;
   background: rgba(250, 250, 250, 0.8);
   padding: 0 40px;
+  height: 100%;
   .chatviewHeader {
     display: flex;
     align-items: center;
@@ -68,22 +68,12 @@
 }
 .chatviewContent {
   display: flex;
-  padding: 10px 0;
   flex-direction: column;
   gap: 10px;
   position: relative;
   overflow-y: auto;
-  height: 720px;
-}
-
-.chatviewContent {
-  display: flex;
-  padding: 10px 0;
-  flex-direction: column;
-  gap: 10px;
-  position: relative;
-  overflow-y: auto;
-  max-height: 720px;
+  max-height: calc(100vh - 374px);
+  padding-bottom: 10px;
 }
 
 .chatviewContent::-webkit-scrollbar {
