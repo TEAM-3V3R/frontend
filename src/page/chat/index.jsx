@@ -12,6 +12,8 @@ import {
   postChat,
 } from '@/api/chatAPI';
 import { Fragment } from 'react';
+import { postCategory } from '@/api/categoryAPI';
+import { postPrompt } from '@/api/promptAPI';
 
 const keywords = [
   { keyword: '산수도', bgColor: 'green' },
@@ -23,10 +25,10 @@ function Chat() {
   const userNo = localStorage.getItem('userNo');
   const [selectedKeyword, setSelectedKeyword] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
-  const [currentChat, setCurrentChat] = useState(chatHistory[0]?.chatId || '');
+  const [currentChat, setCurrentChat] = useState(chatHistory[0]?.chatId || 0);
   const [isNewChat, setIsNewChat] = useState(false);
-
   const [chatInfo, setChatInfo] = useState(null);
+  const [chat, setChat] = useState('');
 
   //   console.log(chatHistory);
   const handleChangeTitle = async (oldTitle, newTitle, chatId) => {
@@ -46,7 +48,7 @@ function Chat() {
       }
     } catch (error) {
       console.error('Error updating chat title:', error);
-      alert('채팅 제목 변경에 실패했습니다.');
+      //  alert추가
     }
   };
 
@@ -76,13 +78,56 @@ function Chat() {
       alert('새 채팅 생성에 실패했습니다.');
     }
   };
+  console.log(selectedKeyword);
+
+  const handleSendChat = async () => {
+    if (!chat.trim()) {
+      alert('채팅 내용을 입력해주세요.');
+      return;
+    }
+    if (currentChat === 0) {
+      alert('새 채팅에서는 메시지를 보낼 수 없습니다. 새로고침을 해주세요.');
+      return;
+    }
+    try {
+      const res = await postPrompt(
+        {
+          chatId: currentChat,
+          promptContent: chat,
+        },
+        selectedKeyword
+      );
+      const imageUrl = res.data.data.data[0].url;
+      const promptId = res.data.data.promptId;
+      if (res.status === 200) {
+        setChatInfo((prev) => ({
+          ...prev,
+          prompts: [
+            ...prev.prompts,
+            {
+              promptContent: chat,
+              imageUrl: imageUrl,
+            },
+          ],
+        }));
+      }
+      setChat('');
+      await postCategory(promptId);
+    } catch (error) {
+      console.error('Error sending chat:', error);
+      alert('채팅 전송에 실패했습니다.');
+    } finally {
+      setChat('');
+    }
+  };
+
   useEffect(() => {
     const getChatHistoryData = async () => {
       try {
         const res = await getChatHistory();
         if (res.status === 200) {
           setChatHistory(res.data.data);
-          setCurrentChat(res.data.data[0]?.chatId || '');
+          setCurrentChat(res.data.data[0]?.chatId || 0);
         }
       } catch (error) {
         console.error('Error fetching chat history:', error);
@@ -178,8 +223,10 @@ function Chat() {
               type="text"
               className={styles.chatInput}
               placeholder="그리고 싶은 내용을 적어보세요"
+              onChange={(e) => setChat(e.target.value)}
+              value={chat}
             />
-            <button className={styles.sendBtn}>
+            <button className={styles.sendBtn} onClick={handleSendChat}>
               <img src={send} alt="send" />
             </button>
           </div>

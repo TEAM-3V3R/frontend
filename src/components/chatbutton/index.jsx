@@ -29,6 +29,11 @@ function ChatButton({ onClick, isSelected, title, onChange, chatId }) {
         src={isSelected ? Chat : NoChat}
         alt="Chat Icon"
         className={styles.chatIcon}
+        onClick={() => {
+          if (isSelected) {
+            setIsClicked(true);
+          }
+        }}
       />
 
       {isClicked && isSelected ? (
@@ -41,14 +46,7 @@ function ChatButton({ onClick, isSelected, title, onChange, chatId }) {
           autoFocus
         />
       ) : (
-        <span
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsClicked(true);
-          }}
-        >
-          {tempTitle}
-        </span>
+        <span style={{ width: '100%' }}>{tempTitle}</span>
       )}
     </div>
   );

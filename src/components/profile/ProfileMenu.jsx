@@ -31,9 +31,9 @@ function ProfileMenu() {
       localStorage.removeItem('isLogin');
       localStorage.removeItem('userNo');
       window.location.reload();
-      alert('로그아웃되었습니다.');
+      //alert('로그아웃되었습니다.');
     } catch (error) {
-      alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
+      //alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
       console.error('Logout error:', error);
       return;
     }
