@@ -8,7 +8,12 @@ function App() {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path === '/register' || path === '/chat' || path === '/demo') {
+    if (
+      path === '/register' ||
+      path === '/chat' ||
+      path === '/demo' ||
+      path === '/inpainting'
+    ) {
       document.body.style.overflowY = 'hidden';
     } else {
       document.body.style.overflowY = 'auto';

@@ -49,6 +49,7 @@ function Chat() {
     } catch (error) {
       console.error('Error updating chat title:', error);
       //  alert추가
+      alert('채팅 제목 변경에 실패했습니다.');
     }
   };
 
@@ -78,7 +79,6 @@ function Chat() {
       alert('새 채팅 생성에 실패했습니다.');
     }
   };
-  console.log(selectedKeyword);
 
   const handleSendChat = async () => {
     if (!chat.trim()) {
@@ -213,7 +213,7 @@ function Chat() {
               {chatInfo?.prompts.map((prompt, index) => (
                 <Fragment key={index}>
                   <My chat={prompt.promptContent} />
-                  <AI imgUrl={prompt.imageUrl} />
+                  <AI imgUrl={prompt.imageUrl} chatId={currentChat} />
                 </Fragment>
               ))}
             </div>
@@ -225,6 +225,11 @@ function Chat() {
               placeholder="그리고 싶은 내용을 적어보세요"
               onChange={(e) => setChat(e.target.value)}
               value={chat}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendChat();
+                }
+              }}
             />
             <button className={styles.sendBtn} onClick={handleSendChat}>
               <img src={send} alt="send" />

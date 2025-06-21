@@ -12,3 +12,11 @@ export const postPrompt = (data, paints) => {
     },
   });
 };
+
+export const postInpainting = (data) => {
+  return instance({
+    method: 'POST',
+    url: API_PROMPT.edit,
+    data: data,
+  });
+};

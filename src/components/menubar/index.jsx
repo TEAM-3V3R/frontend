@@ -7,7 +7,9 @@ function MenuBar() {
   const mainitemStyle =
     url === '/' ? `${styles.menuitem} ${styles.main}` : styles.menuitem;
   const chatitemStyle =
-    url === '/chat' ? `${styles.menuitem} ${styles.chat}` : styles.menuitem;
+    url === '/chat' || url === '/inpainting'
+      ? `${styles.menuitem} ${styles.chat}`
+      : styles.menuitem;
   const historyitemStyle =
     url === '/history'
       ? `${styles.menuitem} ${styles.history}`

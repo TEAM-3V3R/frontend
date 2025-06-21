@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import SignUp from './page/signup';
 import Demo from './page/demo';
 import Chat from './page/chat';
+import Inpainting from './page/inpainting';
 
 export default function Router() {
   return (
@@ -14,6 +15,7 @@ export default function Router() {
         <Route path="/history" element={<Home />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/register" element={<SignUp />} />
+        <Route path="/inpainting" element={<Inpainting />} />
       </Route>
     </Routes>
   );
