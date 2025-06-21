@@ -1,0 +1,57 @@
+.content {
+  width: 100%;
+  height: calc(100vh - 154px);
+  display: flex;
+  padding: 0 75px 25px 75px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  border-radius: 30px;
+  background: rgba(245, 245, 245, 0.8);
+  padding: 0 38px 55px 38px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f5f5f5;
+  padding: 16px 0 10px;
+  .front {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    .title {
+      color: #000;
+      text-align: center;
+      font-size: 50px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+    .backIcon {
+      width: 38px;
+      height: 23px;
+
+      cursor: pointer;
+    }
+  }
+}
+
+.keywordsList {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+.keywordsListGrid {
+  display: grid;
+  grid-template-columns: repeat(4, auto); // 각 항목 너비에 맞춤
+  grid-template-rows: repeat(2, auto);
+  gap: 20px 30px; // 세로 20px, 가로 30px 간격
+  width: fit-content;
+}

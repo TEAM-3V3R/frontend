@@ -1,0 +1,16 @@
+.keyWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #d9d9d9;
+  color: #737373;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 14px; /* 116.667% */
+}

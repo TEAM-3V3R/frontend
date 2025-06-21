@@ -20,16 +20,23 @@ function ImageSaveModal({ chatId, onClose }) {
         selectValue === '요소분리_이미지_저장' ||
         selectValue === '최종_이미지_저장'
       ) {
-        const blob = new Blob([res.data], { type: 'image/png' });
+        const blob = new Blob([res.data], {
+          type:
+            selectValue === '요소분리_이미지_저장'
+              ? 'application/zip'
+              : 'image/png',
+        });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${chatId}_${selectValue}.png`;
+        a.download =
+          selectValue === '요소분리_이미지_저장'
+            ? `${chatId}_${selectValue}.zip`
+            : `${chatId}_${selectValue}.png`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
-        alert('이미지가 저장되었습니다.');
       }
     } catch (error) {
       console.error('Error saving image:', error);
