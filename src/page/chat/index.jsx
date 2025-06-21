@@ -1,10 +1,10 @@
 import Keyword from '@/components/keyword';
 import styles from './chat.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import send from '@/assets/send.svg';
 import ChatButton from '@/components/chatbutton';
-import AI from '@/components/chat/ai';
-import My from '@/components/chat/my';
+import AI from '@/components/chat/Ai';
+import My from '@/components/chat/My';
 import {
   getChat,
   getChatHistory,
@@ -14,6 +14,9 @@ import {
 import { Fragment } from 'react';
 import { postCategory } from '@/api/categoryAPI';
 import { postPrompt } from '@/api/promptAPI';
+import InpaintingChat from '@/components/chat/Inpainting';
+import ImageSaveModal from '@/components/modal/Image';
+import { debounce } from 'lodash';
 
 const keywords = [
   { keyword: '산수도', bgColor: 'green' },
@@ -29,6 +32,7 @@ function Chat() {
   const [isNewChat, setIsNewChat] = useState(false);
   const [chatInfo, setChatInfo] = useState(null);
   const [chat, setChat] = useState('');
+  const [isChatEndedModal, setIsChatEndedModal] = useState(false);
 
   //   console.log(chatHistory);
   const handleChangeTitle = async (oldTitle, newTitle, chatId) => {
@@ -121,6 +125,15 @@ function Chat() {
     }
   };
 
+  const latestHandleSendChat = useRef(handleSendChat);
+  latestHandleSendChat.current = handleSendChat;
+
+  const debouncedSendChat = useRef(
+    debounce(() => {
+      latestHandleSendChat.current();
+    }, 500)
+  ).current;
+
   useEffect(() => {
     const getChatHistoryData = async () => {
       try {
@@ -172,7 +185,10 @@ function Chat() {
             {chatHistory.map((item) => (
               <ChatButton
                 key={item.chatId}
-                onClick={() => setCurrentChat(item.chatId)}
+                onClick={() => {
+                  setCurrentChat(item.chatId);
+                  setIsChatEndedModal(false);
+                }}
                 isSelected={currentChat === item.chatId}
                 title={item.chatTitle || item.promptContent}
                 onChange={(newTitle) =>
@@ -204,18 +220,39 @@ function Chat() {
               </div>
               <Keyword
                 keyword="채팅종료"
-                onClick={() => {}}
-                isSelected={true}
+                onClick={() => {
+                  if (!chatInfo?.isFinished) {
+                    setIsChatEndedModal(true);
+                  }
+                }}
+                isSelected={chatInfo?.isFinished ? false : true}
                 bgColor="red"
+                style={{
+                  cursor: chatInfo?.isFinished ? 'not-allowed' : 'pointer',
+                }}
               />
+              {isChatEndedModal && (
+                <ImageSaveModal
+                  chatId={currentChat}
+                  onClose={() => setIsChatEndedModal(false)}
+                />
+              )}
             </div>
             <div className={styles.chatviewContent}>
-              {chatInfo?.prompts.map((prompt, index) => (
-                <Fragment key={index}>
-                  <My chat={prompt.promptContent} />
-                  <AI imgUrl={prompt.imageUrl} chatId={currentChat} />
-                </Fragment>
-              ))}
+              {chatInfo?.prompts.map((prompt, index) =>
+                prompt.inpaintingImage ? (
+                  <InpaintingChat
+                    key={index}
+                    imgUrl={prompt.imageUrl}
+                    promptContent={prompt.promptContent}
+                  />
+                ) : (
+                  <Fragment key={index}>
+                    <My chat={prompt.promptContent} />
+                    <AI imgUrl={prompt.imageUrl} chatId={currentChat} />
+                  </Fragment>
+                )
+              )}
             </div>
           </div>
           <div className={styles.chatInputWrapper}>
@@ -227,11 +264,13 @@ function Chat() {
               value={chat}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleSendChat();
+                  e.preventDefault();
+                  debouncedSendChat();
                 }
               }}
+              disabled={chatInfo?.isFinished === true}
             />
-            <button className={styles.sendBtn} onClick={handleSendChat}>
+            <button className={styles.sendBtn} onClick={debouncedSendChat}>
               <img src={send} alt="send" />
             </button>
           </div>

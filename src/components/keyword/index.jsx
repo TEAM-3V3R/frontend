@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './keyword.module.scss';
 
-function Keyword({ keyword, onClick, isSelected, bgColor }) {
+function Keyword({ keyword, onClick, isSelected, bgColor, style }) {
   let buttonStyle;
   switch (bgColor) {
     case 'blue':
@@ -24,7 +24,11 @@ function Keyword({ keyword, onClick, isSelected, bgColor }) {
   }
 
   return (
-    <button className={buttonStyle} onClick={() => onClick(keyword)}>
+    <button
+      className={buttonStyle}
+      onClick={() => onClick(keyword)}
+      style={style}
+    >
       {keyword}
     </button>
   );

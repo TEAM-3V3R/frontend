@@ -1,4 +1,4 @@
-import { API_CHAT } from '@/util/api';
+import { API_CHAT, API_IMAGE } from '@/util/api';
 import instance from './instance';
 export const getChatHistory = () => {
   return instance({
@@ -28,5 +28,17 @@ export const postChat = (paints) => {
     method: 'post',
     url: API_CHAT.chat,
     params: { paints },
+  });
+};
+
+export const postImageDownload = (chatId, downloadType) => {
+  return instance({
+    method: 'post',
+    url: API_IMAGE.download,
+    params: {
+      chatId: chatId,
+      'download-type': downloadType,
+    },
+    responseType: 'blob',
   });
 };

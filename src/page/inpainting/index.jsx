@@ -11,8 +11,10 @@ import { useRef, useState } from 'react';
 import Keyword from '@/components/keyword';
 import Canvas from '@/components/canvas';
 import { postInpainting } from '@/api/promptAPI';
-import MyInpainting from '@/components/chat/myInpainting';
-import AIInpainting from '@/components/chat/aiInpainting';
+import MyInpainting from '@/components/chat/MyInpainting';
+import AIInpainting from '@/components/chat/AiInpainting';
+import { debounce } from 'lodash';
+import InpaintingModal from '@/components/modal/Inpainting';
 
 function Inpainting() {
   const canvasRef = useRef();
@@ -23,10 +25,10 @@ function Inpainting() {
   const [mode, setMode] = useState('draw');
   const [inpaintingChat, setInpaintingChat] = useState('');
   const [inpaintingResult, setInpaintingResult] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSend = async () => {
     const maskBase64 = canvasRef.current?.getMaskBase64?.();
-    console.log('Mask Base64:', maskBase64);
     const pureBase64 = maskBase64?.split(',')[1];
     const data = {
       chatId: chatId,
@@ -34,16 +36,15 @@ function Inpainting() {
       imageFileUrl: canvasImgUrl,
       maskFile: pureBase64,
     };
+    setInpaintingResult((prev) => [
+      ...prev,
+      {
+        chat: inpaintingChat,
+        imgUrl: '',
+        send: 'my',
+      },
+    ]);
     try {
-      setInpaintingResult((prev) => [
-        ...prev,
-        {
-          chat: inpaintingChat,
-          imgUrl: '',
-          send: 'my',
-        },
-      ]);
-
       const res = await postInpainting(data);
       const result = res.data;
       const resultUrl = result.data.data[0].url;
@@ -57,8 +58,6 @@ function Inpainting() {
         },
       ]);
       setCanvasImgUrl(resultUrl);
-      console.log('Returned URL:', result.data.data[0].url);
-      console.log(inpaintingResult);
     } catch (error) {
       console.error('Error sending inpainting request:', error);
       alert('인페인팅 요청에 실패했습니다. 다시 시도해주세요.');
@@ -67,6 +66,15 @@ function Inpainting() {
       canvasRef.current?.clear(); // 초기화
     }
   };
+
+  const latestHandleSend = useRef(handleSend);
+  latestHandleSend.current = handleSend;
+
+  const debouncedSend = useRef(
+    debounce(() => {
+      latestHandleSend.current();
+    }, 500)
+  ).current;
 
   return (
     <>
@@ -118,7 +126,11 @@ function Inpainting() {
                   keyword={'인페인팅 종료하기'}
                   isSelected={true}
                   bgColor="red"
+                  onClick={() => setIsModalOpen(true)}
                 />
+                {isModalOpen && (
+                  <InpaintingModal onClose={() => setIsModalOpen(false)} />
+                )}
               </div>
             </div>
             <div className={styles.chatviewContent}>
@@ -139,11 +151,12 @@ function Inpainting() {
               onChange={(e) => setInpaintingChat(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleSend();
+                  e.preventDefault();
+                  debouncedSend();
                 }
               }}
             />
-            <button className={styles.sendBtn} onClick={handleSend}>
+            <button className={styles.sendBtn} onClick={debouncedSend}>
               <img src={send} alt="send" />
             </button>
           </div>

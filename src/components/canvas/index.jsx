@@ -143,7 +143,7 @@ const Canvas = forwardRef(function Canvas(
     ctx.globalCompositeOperation =
       mode === 'erase' ? 'destination-out' : 'source-over';
     ctx.lineTo(coords.x, coords.y);
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = '#5FC7FF';
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
