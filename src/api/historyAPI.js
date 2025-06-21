@@ -10,3 +10,10 @@ export const getHistory = (paints, sort) => {
     params,
   });
 };
+
+export const getHistoryDetail = (chatId) => {
+  return instance({
+    method: 'GET',
+    url: API_HISTORY.historyID(chatId),
+  });
+};

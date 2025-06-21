@@ -61,18 +61,31 @@
   border-radius: 0px 0px 20px 20px;
   border: 0px solid #e5e7eb;
   background: #f5f5f5;
-  min-height: 90px;
+  min-height: 96px;
 }
 
 .keyWrapper {
   display: flex;
   align-items: center;
-
+  height: 20px;
   gap: 10px;
+  position: relative;
   .toggleIcon {
     width: 12px;
     height: 7.41px;
     cursor: pointer;
+  }
+  .keyList {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 180px;
+    border-radius: 20px;
+    background: var(--ButtonC_final, #47b290);
+    padding: 10px;
   }
 }
 
@@ -84,7 +97,8 @@
   line-height: 14px; /* 100% */
   display: -webkit-box;
   word-break: break-word;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

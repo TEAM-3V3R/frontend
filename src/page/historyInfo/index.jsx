@@ -1,9 +1,13 @@
 import Keyword from '@/components/keyword';
 import styles from './historyinfo.module.scss';
 import back from '@/assets/back.svg';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import InfoCard from '@/components/infocard';
+import { getHistoryDetail } from '@/api/historyAPI';
+import leftarrow from '@/assets/leftarrow.svg';
+import rightarrow from '@/assets/rightarrow.svg';
+import close from '@/assets/close.svg';
 
 const keywords = {
   산수도: { bgColor: 'green' },
@@ -13,8 +17,33 @@ const keywords = {
 
 function HistoryInfo() {
   const navigate = useNavigate();
+  const params = useParams();
+  const chatId = params.chatId;
   const [keyword, setKeyword] = useState('산수도');
+  const [historyInfoData, setHistoryInfoData] = useState();
+  const [promptAllData, setPromptAllData] = useState([]);
+  const [promptData, setPromptData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(null);
 
+  useEffect(() => {
+    const fetchHistoryInfo = async () => {
+      const res = await getHistoryDetail(chatId);
+      setHistoryInfoData(res.data.data);
+      setKeyword(res.data.data.paints);
+      setPromptAllData(res.data.data.prompts);
+    };
+    fetchHistoryInfo();
+  }, [chatId]);
+
+  useEffect(() => {
+    const sliceStart = (page - 1) * 8;
+    const sliceEnd = page * 8;
+    const promptDataSlice = promptAllData?.slice(sliceStart, sliceEnd);
+    setPromptData(promptDataSlice);
+  }, [page, promptAllData]);
+  const totalPages = Math.ceil(promptAllData.length / 8);
+  console.log('totalPages', totalPages);
   const handleClickBack = () => {
     navigate(-1);
   };
@@ -47,64 +76,68 @@ function HistoryInfo() {
             </div>
           </div>
           <div className={styles.keywordsList}>
+            <img
+              src={leftarrow}
+              alt="이전"
+              className={styles.leftArrow}
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              style={{
+                display: page > 1 ? 'block' : 'none',
+              }}
+            />
             <div className={styles.keywordsListGrid}>
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
+              {promptData.map((item, index) => (
+                <InfoCard
+                  key={index}
+                  imgUrl={item.imageUrl}
+                  prompt={item.promptContent}
+                  keyArr={item.classifications}
+                  index={(page - 1) * 8 + index + 1}
+                  date={item.createdAt}
+                  page={page}
+                  onClick={() => setSelectedImage(item.imageUrl)}
+                />
+              ))}
+            </div>
+            <img
+              src={rightarrow}
+              alt="다음"
+              className={styles.rightArrow}
+              onClick={() => setPage((prev) => prev + 1)}
+              style={{
+                display: page < totalPages ? 'block' : 'none',
+              }}
+            />
+          </div>
+          {selectedImage && (
+            <div className={styles.createImgWrapper}>
+              <img
+                className={styles.createImg}
+                src={selectedImage}
+                alt="선택된 이미지"
               />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
-              />
-              <InfoCard
-                imgUrl="https://pbs.twimg.com/media/Gt-3PRAXEAA_vl-?format=jpg&name=medium"
-                prompt="산수도dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                keyArr={['산수도', '어해도', '탱화']}
-                index={1}
-                date="2025-06-21T06:24:20.643145"
+              <img
+                className={styles.closeIcon}
+                src={close}
+                alt="닫기"
+                onClick={() => setSelectedImage(null)}
               />
             </div>
+          )}
+          <div className={styles.buttonWrapper}>
+            <Keyword
+              keyword="후처리 내역 보러 가기"
+              isSelected={true}
+              bgColor="blue"
+              onClick={() => navigate(`/process/${chatId}`)}
+            />
+          </div>
+          <div className={styles.createImgWrapper}>
+            <img
+              className={styles.createImg}
+              src={historyInfoData?.finalImageUrl}
+              alt="선택된 이미지"
+            />
           </div>
         </div>
       </div>
