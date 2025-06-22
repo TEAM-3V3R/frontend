@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import styles from './CompareSlider.module.scss';
+import styles from './compareslider.module.scss';
 
 function CompareSlider({ beforeImg, afterImg }) {
   const containerRef = useRef(null);
