@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styles from './MenuBar.module.scss';
+import styles from './menubar.module.scss';
 
 function MenuBar() {
   const navigate = useNavigate();
