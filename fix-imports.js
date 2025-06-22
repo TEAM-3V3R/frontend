@@ -1,84 +1,41 @@
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 
-const importRegex = /import\s+.*?\s+from\s+['"](@\/components\/[^'"]+)['"]/g;
-const srcBase = path.resolve('./src');
-const componentsPath = path.join(srcBase, 'components');
+const baseDir = path.resolve('./src/components');
 
-function getAllJsxOnlyFiles() {
-  const jsxOnly = new Set();
-  const seen = new Map();
-
-  const walk = (dir) => {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(fullPath);
-      } else if (entry.name.endsWith('.jsx') || entry.name.endsWith('.js')) {
-        const rel = path.relative(srcBase, fullPath).replace(/\\/g, '/');
-        const key = rel.replace(/\.(js|jsx)$/, '');
-
-        if (!seen.has(key)) {
-          seen.set(key, entry.name.endsWith('.jsx') ? '.jsx' : '.js');
-        } else {
-          seen.set(key, 'conflict');
-        }
-      }
-    }
-  };
-
-  walk(componentsPath);
-
-  for (const [key, ext] of seen.entries()) {
-    if (ext === '.jsx') {
-      jsxOnly.add(key);
+function walk(dir) {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walk(full));
+    } else if (entry.name.endsWith('.jsx') || entry.name.endsWith('.js')) {
+      files.push(full);
     }
   }
-
-  return jsxOnly;
+  return files;
 }
 
-function fixImportsInFile(filePath, validJsxImports) {
-  let content = fs.readFileSync(filePath, 'utf-8');
-  let changed = false;
+function fixCaseMismatch() {
+  const files = walk(baseDir);
 
-  content = content.replace(importRegex, (match, rawPath) => {
-    const relPath = rawPath.replace(/^@\//, '');
-    if (validJsxImports.has(relPath)) {
-      changed = true;
-      return match.replace(rawPath, rawPath + '.jsx');
+  files.forEach((fullPath) => {
+    const relPath = path.relative('.', fullPath).replace(/\\/g, '/');
+    const gitTracked = execSync(`git ls-files "${relPath.toLowerCase()}"`)
+      .toString()
+      .trim();
+
+    if (gitTracked && gitTracked !== relPath) {
+      console.log(`🔁 Fixing case: ${gitTracked} → ${relPath}`);
+      execSync(`git mv "${gitTracked}" "${relPath}.temp"`);
+      execSync(`git mv "${relPath}.temp" "${relPath}"`);
     }
-    return match;
   });
 
-  if (changed) {
-    fs.writeFileSync(filePath, content, 'utf-8');
-    console.log(`✅ Fixed: ${filePath}`);
-  }
+  console.log(
+    '\n✅ Case fix completed. Now run: git commit -am "Fix filename casing"\n'
+  );
 }
 
-function run() {
-  const validImports = getAllJsxOnlyFiles();
-  const targets = [];
-
-  const scan = (dir) => {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        scan(fullPath);
-      } else if (entry.name.endsWith('.js') || entry.name.endsWith('.jsx')) {
-        targets.push(fullPath);
-      }
-    }
-  };
-
-  scan(srcBase);
-
-  for (const file of targets) {
-    fixImportsInFile(file, validImports);
-  }
-}
-
-run();
+fixCaseMismatch();
