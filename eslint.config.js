@@ -35,7 +35,7 @@ export default [
         'ignorePackages',
         {
           js: 'never',
-          jsx: 'never',
+          jsx: 'always',
         },
       ],
     },
