@@ -7,4 +7,4 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },
-});
+}); // 누구때문에 다시 커밋씀
