@@ -47,8 +47,6 @@ function SignUp() {
       const res = await postSignin(signupData);
       if (res.data) {
         alert('회원가입에 성공했습니다.');
-        localStorage.setItem('isLogin', 'true');
-        localStorage.setItem('userNo', res.data.data.userId);
         navigate('/');
       }
     } catch (error) {
@@ -70,17 +68,20 @@ function SignUp() {
             <input
               type="text"
               className={styles.input}
+              onKeyDown={(e) => {
+                if (e.key === ' ') {
+                  e.preventDefault();
+                }
+              }}
               {...register('ID', {
                 required: 'ID는 필수 입력입니다.',
                 validate: (value) => {
                   const isValidLength = value.length >= 4 && value.length <= 20;
-                  const isValidChars = /^[A-Za-z0-9]+$/.test(value);
+
                   if (!isValidLength) {
                     return 'ID는 최소 4 자, 최대 20 자 입니다.';
                   }
-                  if (!isValidChars) {
-                    return 'ID에 특수기호 사용은 불가능합니다.';
-                  }
+
                   if (!isChecked) {
                     return 'ID 중복 확인을 해주세요.';
                   }

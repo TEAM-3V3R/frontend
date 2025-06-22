@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Chart from '@/components/chart';
 import redscroll from '@/assets/redscroll.png';
 import bluescroll from '@/assets/bluescroll.png';
+import warn from '@/assets/warn.svg';
+
+import aiinfo from '@/assets/aiinfo.png';
+import { useState } from 'react';
 
 const detailed = {
   'sentence flex': '문장 단위 유연성',
@@ -16,6 +20,7 @@ const detailed = {
 
 function AI() {
   const navigate = useNavigate();
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const detailScore = {
     'sentence flex': Math.floor(Math.random() * 51) + 50,
     'keyword flex': Math.floor(Math.random() * 51) + 50,
@@ -62,7 +67,20 @@ function AI() {
           </div>
         </div>
         <div className={styles.scroll}>
-          <div className={styles.scrollContent}>
+          {isInfoOpen && (
+            <div className={styles.aiInfo}>
+              <img
+                src={aiinfo}
+                alt="AI Info"
+                className={styles.aiInfoImg}
+                onClick={() => setIsInfoOpen(false)}
+              />
+            </div>
+          )}
+          <div
+            className={styles.scrollContent}
+            style={{ display: isInfoOpen ? 'none' : 'flex' }}
+          >
             <img
               src={redscroll}
               alt="red scroll"
@@ -87,7 +105,10 @@ function AI() {
               </div>
             </div>
           </div>
-          <div className={styles.scrollContent}>
+          <div
+            className={styles.scrollContent}
+            style={{ display: isInfoOpen ? 'none' : 'flex' }}
+          >
             <img
               src={bluescroll}
               alt="bluescroll"
@@ -111,6 +132,18 @@ function AI() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div
+          className={styles.infoBtnWrapper}
+          onClick={() => setIsInfoOpen(!isInfoOpen)}
+        >
+          <button className={styles.infoBtn}>
+            AI 보고서의 점수는 최종 창의성 점수입니다.
+          </button>
+          <div className={styles.info}>
+            <img src={warn} alt="info" className={styles.icon} />
+            <span className={styles.infoText}>i</span>
           </div>
         </div>
       </div>

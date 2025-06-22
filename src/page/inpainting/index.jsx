@@ -15,6 +15,7 @@ import MyInpainting from '@/components/chat/MyInpainting.jsx';
 import AIInpainting from '@/components/chat/AiInpainting.jsx';
 import { debounce } from 'lodash';
 import InpaintingModal from '@/components/modal/Inpainting';
+import { postCategory } from '@/api/categoryAPI';
 
 function Inpainting() {
   const canvasRef = useRef();
@@ -48,6 +49,7 @@ function Inpainting() {
       const res = await postInpainting(data);
       const result = res.data;
       const resultUrl = result.data.data[0].url;
+      const promptId = result.data.promptId;
 
       setInpaintingResult((prev) => [
         ...prev,
@@ -58,6 +60,7 @@ function Inpainting() {
         },
       ]);
       setCanvasImgUrl(resultUrl);
+      await postCategory(promptId);
     } catch (error) {
       console.error('Error sending inpainting request:', error);
       alert('인페인팅 요청에 실패했습니다. 다시 시도해주세요.');

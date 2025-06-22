@@ -30,6 +30,11 @@ function Login() {
           type="text"
           className={styles.input}
           onChange={(e) => setId(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === ' ') {
+              e.preventDefault();
+            }
+          }}
         />
       </div>
       <div className={styles.loginButtonWrapper}>

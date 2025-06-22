@@ -2,9 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import styles from './chat.module.scss';
 import inpainting from '@/assets/inpainting.svg';
 
-function AI({ imgUrl, chatId }) {
+function AI({ imgUrl, chatId, isFinished }) {
   const navigate = useNavigate();
   const handleInpainting = () => {
+    if (isFinished) {
+      alert('채팅이 종료된 상태에서는 인페인팅을 진행할 수 없습니다.');
+      return;
+    }
     navigate('/inpainting', { state: { imgUrl, chatId } });
   };
   //console.log(chatId);

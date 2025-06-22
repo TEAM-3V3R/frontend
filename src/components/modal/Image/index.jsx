@@ -2,9 +2,11 @@ import ReactDOM from 'react-dom';
 import styles from './ImageSaveModal.module.scss';
 import { useState } from 'react';
 import { postImageDownload } from '@/api/chatAPI';
+import ImageSendModal from '../ImageSend';
 
 function ImageSaveModal({ chatId, onClose }) {
   const [selectValue, setSelectValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const handleSelectChange = (e) => {
     setSelectValue(e.target.value);
   };
@@ -15,6 +17,9 @@ function ImageSaveModal({ chatId, onClose }) {
       return;
     }
     try {
+      if (selectValue === '요소분리_이미지_저장') {
+        setIsLoading(true);
+      }
       const res = await postImageDownload(chatId, selectValue);
       if (
         selectValue === '요소분리_이미지_저장' ||
@@ -43,11 +48,15 @@ function ImageSaveModal({ chatId, onClose }) {
       alert('이미지 저장에 실패했습니다.');
     } finally {
       onClose();
+      setIsLoading(false);
     }
   };
 
   return ReactDOM.createPortal(
-    <div className={styles.modal}>
+    <div
+      className={styles.modal}
+      style={{ display: isLoading ? 'none' : 'flex' }}
+    >
       <span className={styles.title}>채팅 종료하기</span>
       <div className={styles.bar} />
       <p className={styles.description}>
@@ -79,6 +88,13 @@ function ImageSaveModal({ chatId, onClose }) {
           <br />
           (뒤로가기)
         </button>
+        {isLoading && (
+          <ImageSendModal
+            onClose={() => setIsLoading(false)}
+            description="이미지 저장 중입니다. 잠시만 기다려주세요."
+            title="이미지 저장 중"
+          />
+        )}
       </div>
     </div>,
     document.getElementById('modal-root')
