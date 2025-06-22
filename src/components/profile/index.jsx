@@ -1,4 +1,4 @@
-import Login from './login';
+import Login from './Login';
 import ProfileMenu from './profilemenu';
 import styles from './Profile.module.scss';
 function Profile() {
