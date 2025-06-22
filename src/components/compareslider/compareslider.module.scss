@@ -19,7 +19,6 @@
   object-fit: fill;
   pointer-events: none;
   backface-visibility: hidden;
-  transform: translateZ(0); // GPU 렌더링 유도
   user-select: none;
   -webkit-user-drag: none;
   -webkit-user-select: none;
@@ -39,7 +38,6 @@
   contain: paint;
   isolation: isolate;
   pointer-events: none;
-  filter: opacity(1); // 강제 GPU 레이어 승격
 }
 
 .slider {
