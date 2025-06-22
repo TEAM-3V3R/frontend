@@ -9,6 +9,9 @@ import green from '@/assets/green.svg';
 import bg from '@/assets/bg.svg';
 import paper from '@/assets/paper.png';
 import hoverBg from '@/assets/hoverBg.svg';
+import CompareSlider from '@/components/compareslider';
+import before from '@/assets/before.jpg';
+import after from '@/assets/after.jpg';
 
 const phrases = {
   化록: 'AI 창작자가 되고 싶은 당신을 위하여',
@@ -197,10 +200,7 @@ function Home() {
         <div className={styles.paperWrapper}>
           <div className={styles.paperItem}>
             <img src={paper} alt="Paper" className={styles.paper} />
-            <div className={styles.paperBg}>
-              <div className={styles.lightgray} />
-              <div className={styles.darkgray} />
-            </div>
+            <CompareSlider beforeImg={before} afterImg={after} />
           </div>
         </div>
       </div>

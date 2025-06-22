@@ -17,6 +17,7 @@ import { postPrompt } from '@/api/promptAPI';
 import InpaintingChat from '@/components/chat/Inpainting.jsx';
 import ImageSaveModal from '@/components/modal/Image';
 import { debounce } from 'lodash';
+import ImageSendModal from '@/components/modal/ImageSend';
 
 const keywords = [
   { keyword: '산수도', bgColor: 'green' },
@@ -33,6 +34,7 @@ function Chat() {
   const [chatInfo, setChatInfo] = useState(null);
   const [chat, setChat] = useState('');
   const [isChatEndedModal, setIsChatEndedModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //   console.log(chatHistory);
   const handleChangeTitle = async (oldTitle, newTitle, chatId) => {
@@ -94,6 +96,7 @@ function Chat() {
       return;
     }
     try {
+      setIsLoading(true);
       const res = await postPrompt(
         {
           chatId: currentChat,
@@ -122,6 +125,7 @@ function Chat() {
       alert('채팅 전송에 실패했습니다.');
     } finally {
       setChat('');
+      setIsLoading(false);
     }
   };
 
@@ -249,7 +253,11 @@ function Chat() {
                 ) : (
                   <Fragment key={index}>
                     <My chat={prompt.promptContent} />
-                    <AI imgUrl={prompt.imageUrl} chatId={currentChat} />
+                    <AI
+                      imgUrl={prompt.imageUrl}
+                      chatId={currentChat}
+                      isFinished={chatInfo?.isFinished}
+                    />
                   </Fragment>
                 )
               )}
@@ -274,6 +282,13 @@ function Chat() {
               <img src={send} alt="send" />
             </button>
           </div>
+          {isLoading && (
+            <ImageSendModal
+              onClose={() => setIsLoading(false)}
+              description="이미지 생성 중입니다. 잠시만 기다려주세요."
+              title="이미지 생성 중"
+            />
+          )}
         </div>
       </div>
     </>

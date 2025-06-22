@@ -1,4 +1,6 @@
-/* *,
+@import './fonts';
+
+*,
 *::after,
 *::before {
   margin: 0;
@@ -12,7 +14,6 @@ html {
 
 body {
   font-family: 'GmarketSans', sans-serif;
-  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
   cursor: default;
   overflow-x: hidden;
 }
@@ -27,4 +28,4 @@ button {
   border: none;
   outline: none;
   background-color: #ffffff;
-} */
+}

@@ -52,7 +52,11 @@ function History() {
         .map((item) => item.keyword);
 
       const res = await getHistory(keywordOptions, sortOption);
-      setHistory(res.data.data);
+      const historyData = res.data.data.filter(
+        (item) => item.promptContent !== null && item.image_url !== null
+      );
+
+      setHistory(historyData);
     };
     fetchHistory();
   }, [userNo, keywordState, sortOption]);
@@ -95,7 +99,7 @@ function History() {
                     imgUrl={item.image_url}
                     date={formatDate(item.createAt)}
                     chatId={item.chatId}
-                    title={item.chatTitle || ''}
+                    title={item.chatTitle || item.promptContent}
                     category={item.paints}
                   />
                 ))}

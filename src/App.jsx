@@ -1,5 +1,6 @@
 import Router from './Router';
-import './App.css';
+
+import './style/_global.scss';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 

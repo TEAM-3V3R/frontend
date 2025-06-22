@@ -138,26 +138,31 @@
   margin-top: 282px;
   .paperItem {
     position: relative;
+
     .paper {
       width: 1268px;
       height: 642px;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      pointer-events: none;
     }
-    .paperBg {
-      display: flex;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 1049px;
-      height: 487px;
-      .lightgray {
-        background: #d9d9d9;
-        flex: 1;
-      }
-      .darkgray {
-        background: #818181;
-        flex: 2.5;
-      }
-    }
+    // .paperBg {
+    //   display: flex;
+    //   position: absolute;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   width: 1049px;
+    //   height: 487px;
+    //   .lightgray {
+    //     background: #d9d9d9;
+    //     flex: 1;
+    //   }
+    //   .darkgray {
+    //     background: #818181;
+    //     flex: 2.5;
+    //   }
+    // }
   }
 }
