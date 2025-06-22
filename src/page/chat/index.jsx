@@ -3,8 +3,8 @@ import styles from './chat.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import send from '@/assets/send.svg';
 import ChatButton from '@/components/chatbutton';
-import AI from '@/components/chat/Ai';
-import My from '@/components/chat/My';
+import AI from '@/components/chat/Ai.jsx';
+import My from '@/components/chat/My.jsx';
 import {
   getChat,
   getChatHistory,
@@ -14,7 +14,7 @@ import {
 import { Fragment } from 'react';
 import { postCategory } from '@/api/categoryAPI';
 import { postPrompt } from '@/api/promptAPI';
-import InpaintingChat from '@/components/chat/Inpainting';
+import InpaintingChat from '@/components/chat/Inpainting.jsx';
 import ImageSaveModal from '@/components/modal/Image';
 import { debounce } from 'lodash';
 

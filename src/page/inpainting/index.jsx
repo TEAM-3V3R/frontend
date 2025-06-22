@@ -11,8 +11,8 @@ import { useRef, useState } from 'react';
 import Keyword from '@/components/keyword';
 import Canvas from '@/components/canvas';
 import { postInpainting } from '@/api/promptAPI';
-import MyInpainting from '@/components/chat/MyInpainting';
-import AIInpainting from '@/components/chat/AiInpainting';
+import MyInpainting from '@/components/chat/MyInpainting.jsx';
+import AIInpainting from '@/components/chat/AiInpainting.jsx';
 import { debounce } from 'lodash';
 import InpaintingModal from '@/components/modal/Inpainting';
 
