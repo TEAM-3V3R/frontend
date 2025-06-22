@@ -10,9 +10,12 @@ function MenuBar() {
     url === '/chat' || url === '/inpainting'
       ? `${styles.menuitem} ${styles.chat}`
       : styles.menuitem;
-  const historyitemStyle = url.startsWith('/history')
-    ? `${styles.menuitem} ${styles.history}`
-    : styles.menuitem;
+  const historyitemStyle =
+    url.startsWith('/history') ||
+    url.startsWith('/process') ||
+    url.startsWith('/ai')
+      ? `${styles.menuitem} ${styles.history}`
+      : styles.menuitem;
   const demoitemStyle =
     url === '/demo' ? `${styles.menuitem} ${styles.demo}` : styles.menuitem;
 

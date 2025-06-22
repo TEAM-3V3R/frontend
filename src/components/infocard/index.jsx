@@ -1,4 +1,4 @@
-import formatIsoToCustomDate from '@/util/formatISODate';
+import { formatIsoToCustomDate } from '@/util/formatISODate';
 import styles from './infocard.module.scss';
 import up from '@/assets/up.svg';
 import down from '@/assets/down(1).svg';
@@ -33,7 +33,10 @@ function InfoCard({ imgUrl, prompt, keyArr, index, date, page, onClick }) {
               src={isOpen ? up : down}
               alt="toggle"
               className={styles.toggleIcon}
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+              }}
             />
             {importantKeys.map((key, idx) => (
               <Key key={idx}>{key}</Key>

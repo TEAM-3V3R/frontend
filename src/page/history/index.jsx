@@ -81,20 +81,27 @@ function History() {
               <option value="과거순">과거순</option>
             </select>
           </div>
-          <div className={styles.historyList}>
-            <div className={styles.historyListGrid}>
-              {history?.map((item) => (
-                <Card
-                  key={item.chatId}
-                  imgUrl={item.image_url}
-                  date={formatDate(item.createAt)}
-                  chatId={item.chatId}
-                  title={item.chatTitle || ''}
-                  category={item.paints}
-                />
-              ))}
+
+          {history.length === 0 ? (
+            <div className={styles.noHistory}>
+              해당 태그와 관련한 히스토리가 아직 존재하지 않습니다.
             </div>
-          </div>
+          ) : (
+            <div className={styles.historyList}>
+              <div className={styles.historyListGrid}>
+                {history.map((item) => (
+                  <Card
+                    key={item.chatId}
+                    imgUrl={item.image_url}
+                    date={formatDate(item.createAt)}
+                    chatId={item.chatId}
+                    title={item.chatTitle || ''}
+                    category={item.paints}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

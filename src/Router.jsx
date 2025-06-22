@@ -7,6 +7,8 @@ import Chat from './page/chat';
 import Inpainting from './page/inpainting';
 import History from './page/history';
 import HistoryInfo from './page/historyInfo';
+import Process from './page/process';
+import AI from './page/ai';
 
 export default function Router() {
   return (
@@ -19,6 +21,8 @@ export default function Router() {
         <Route path="/demo" element={<Demo />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/inpainting" element={<Inpainting />} />
+        <Route path="/process/:chatId" element={<Process />} />
+        <Route path="/ai/:chatId" element={<AI />} />
       </Route>
     </Routes>
   );

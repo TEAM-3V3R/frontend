@@ -72,6 +72,7 @@ function HistoryInfo() {
                 keyword="AI 보고서 보러 가기"
                 isSelected={true}
                 bgColor="green"
+                onClick={() => navigate(`/ai/${chatId}`)}
               />
             </div>
           </div>
