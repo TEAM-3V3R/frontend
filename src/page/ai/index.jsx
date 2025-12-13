@@ -25,42 +25,84 @@ function AI() {
   const params = useParams();
   const navigate = useNavigate();
   const chatId = params.chatId;
-  const [reportData, setReportData] = useState([]);
+  // const [reportData, setReportData] = useState([]);
+  const [reportData, setReportData] = useState(null);
+
+  const [detailScore, setDetailScore] = useState({
+    'sentence flex': 0,
+    'keyword flex': 0,
+    'idea flex': 0,
+    'modifier amount': 0,
+    'modifier density': 0,
+    'clustering density': 0,
+  });
+
+  // useEffect(() => {
+  //   const fetchReportData = async () => {
+  //     const res = await getReport(chatId);
+  //     setReportData(res.data.data);
+  //   };
+  //   fetchReportData();
+  // }, [chatId]);
 
   useEffect(() => {
     const fetchReportData = async () => {
-      const res = await getReport(chatId);
-      setReportData(res.data.data);
+      try {
+        const res = await getReport(chatId);
+        const data = res.data.data;
+
+        setReportData(data);
+
+        setDetailScore({
+          'sentence flex': data?.fluencySkc?.fluency_s ?? 0,
+          'keyword flex': data?.fluencySkc?.fluency_k ?? 0,
+          'idea flex': data?.fluencySkc?.fluency_c ?? 0,
+          'modifier amount': data?.persistenceSrf?.persistence_s ?? 0,
+          'modifier density': data?.persistenceSrf?.persistence_r ?? 0,
+          'clustering density': data?.persistenceSrf?.persistence_f ?? 0,
+        });
+      } catch (e) {
+        console.error('getReport 실패:', e);
+      }
     };
-    fetchReportData();
+
+    if (chatId) fetchReportData();
   }, [chatId]);
+
   console.log('reportData', reportData);
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const detailScore = {
-    'sentence flex': Math.floor(Math.random() * 51) + 50,
-    'keyword flex': Math.floor(Math.random() * 51) + 50,
-    'idea flex': Math.floor(Math.random() * 51) + 50,
-    'modifier amount': Math.floor(Math.random() * 51) + 50,
-    'modifier density': Math.floor(Math.random() * 51) + 50,
-    'clustering density': Math.floor(Math.random() * 51) + 50,
-  };
-  const flexibilityScore = Math.floor(
-    detailScore['sentence flex'] +
-      detailScore['keyword flex'] +
-      detailScore['idea flex']
-  );
-  const persistenceScore = Math.floor(
-    detailScore['modifier amount'] +
-      detailScore['modifier density'] +
-      detailScore['clustering density']
-  );
 
-  const score =
-    Math.floor(
-      Object.values(detailScore).reduce((acc, val) => acc + val, 0) /
-        Object.values(detailScore).length
-    ) || 0;
+  // const detailScore = {
+  //   'sentence flex': Math.floor(Math.random() * 51) + 50,
+  //   'keyword flex': Math.floor(Math.random() * 51) + 50,
+  //   'idea flex': Math.floor(Math.random() * 51) + 50,
+  //   'modifier amount': Math.floor(Math.random() * 51) + 50,
+  //   'modifier density': Math.floor(Math.random() * 51) + 50,
+  //   'clustering density': Math.floor(Math.random() * 51) + 50,
+  // };
+
+  // 혹시 계산 프론트가 하나 ?
+  // const flexibilityScore = Math.floor(
+  //   detailScore['sentence flex'] +
+  //     detailScore['keyword flex'] +
+  //     detailScore['idea flex']
+  // );
+  // const persistenceScore = Math.floor(
+  //   detailScore['modifier amount'] +
+  //     detailScore['modifier density'] +
+  //     detailScore['clustering density']
+  // );
+  // const score =
+  //   Math.floor(
+  //     Object.values(detailScore).reduce((acc, val) => acc + val, 0) /
+  //       Object.values(detailScore).length
+  //   ) || 0;
+
+  const flexibilityScore = reportData?.fluency ?? 0;
+  const persistenceScore = reportData?.persistence ?? 0;
+  const score = reportData?.creativity ?? 0;
+
   return (
     <div className={styles.content}>
       <div className={styles.main}>
@@ -112,7 +154,7 @@ function AI() {
                       <p>
                         {i + 1}. {value}
                       </p>
-                      <p>{detailScore[key]}점</p>
+                      <p>{detailScore[key] ?? 0}점</p>
                     </div>
                   ))}
                 <div className={styles.totalScore}>
@@ -140,7 +182,7 @@ function AI() {
                       <p>
                         {i + 1}. {value}
                       </p>
-                      <p>{detailScore[key]}점</p>
+                      <p>{detailScore[key] ?? 0}점</p>
                     </div>
                   ))}
                 <div className={styles.totalScore}>
