@@ -25,7 +25,6 @@ function AI() {
   const params = useParams();
   const navigate = useNavigate();
   const chatId = params.chatId;
-  // const [reportData, setReportData] = useState([]);
   const [reportData, setReportData] = useState(null);
 
   const [detailScore, setDetailScore] = useState({
@@ -37,14 +36,6 @@ function AI() {
     'clustering density': 0,
   });
 
-  // useEffect(() => {
-  //   const fetchReportData = async () => {
-  //     const res = await getReport(chatId);
-  //     setReportData(res.data.data);
-  //   };
-  //   fetchReportData();
-  // }, [chatId]);
-
   useEffect(() => {
     const fetchReportData = async () => {
       try {
@@ -53,6 +44,7 @@ function AI() {
 
         setReportData(data);
 
+        // 유연성, 창의성 세부 점수
         setDetailScore({
           'sentence flex': data?.fluencySkc?.fluency_s ?? 0,
           'keyword flex': data?.fluencySkc?.fluency_k ?? 0,
@@ -73,32 +65,7 @@ function AI() {
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
-  // const detailScore = {
-  //   'sentence flex': Math.floor(Math.random() * 51) + 50,
-  //   'keyword flex': Math.floor(Math.random() * 51) + 50,
-  //   'idea flex': Math.floor(Math.random() * 51) + 50,
-  //   'modifier amount': Math.floor(Math.random() * 51) + 50,
-  //   'modifier density': Math.floor(Math.random() * 51) + 50,
-  //   'clustering density': Math.floor(Math.random() * 51) + 50,
-  // };
-
-  // 혹시 계산 프론트가 하나 ?
-  // const flexibilityScore = Math.floor(
-  //   detailScore['sentence flex'] +
-  //     detailScore['keyword flex'] +
-  //     detailScore['idea flex']
-  // );
-  // const persistenceScore = Math.floor(
-  //   detailScore['modifier amount'] +
-  //     detailScore['modifier density'] +
-  //     detailScore['clustering density']
-  // );
-  // const score =
-  //   Math.floor(
-  //     Object.values(detailScore).reduce((acc, val) => acc + val, 0) /
-  //       Object.values(detailScore).length
-  //   ) || 0;
-
+  // 유연성, 지속성, 창의성 점수
   const flexibilityScore = reportData?.fluency ?? 0;
   const persistenceScore = reportData?.persistence ?? 0;
   const score = reportData?.creativity ?? 0;
