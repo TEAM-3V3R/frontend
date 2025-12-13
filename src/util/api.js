@@ -40,3 +40,6 @@ export const API_USER = Object.freeze({
   delete: 'user/delete',
   signin: 'user/signin',
 });
+export const API_REPORT = Object.freeze({
+  report: (chatId) => `report/${chatId}/show`,
+});

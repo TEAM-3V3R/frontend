@@ -174,7 +174,7 @@ function Chat() {
       try {
         const res = await getChat(currentChat);
 
-        // ⭐ data 배열 여부 확인 후 0번 인덱스 접근
+        // data 배열 여부 확인 후 0번 인덱스 접근
         if (res?.status === 200) {
           const dataArray = Array.isArray(res.data?.data)
             ? res.data.data

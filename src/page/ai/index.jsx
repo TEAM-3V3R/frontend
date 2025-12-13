@@ -1,13 +1,16 @@
 import Keyword from '@/components/keyword';
 import styles from './ai.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Chart from '@/components/chart';
 import redscroll from '@/assets/redscroll.png';
 import bluescroll from '@/assets/bluescroll.png';
 import warn from '@/assets/warn.svg';
 
 import aiinfo from '@/assets/aiinfo.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { getReport } from '@/api/reportAPI';
+
 
 const detailed = {
   'sentence flex': '문장 단위 유연성',
@@ -19,7 +22,20 @@ const detailed = {
 };
 
 function AI() {
+  const params = useParams();
   const navigate = useNavigate();
+  const chatId = params.chatId;
+  const [reportData, setReportData] = useState([]);
+
+  useEffect(() => {
+    const fetchReportData = async () => {
+      const res = await getReport(chatId);
+      setReportData(res.data.data);
+    };
+    fetchReportData();
+  }, [chatId]);
+  console.log('reportData', reportData);
+
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const detailScore = {
     'sentence flex': Math.floor(Math.random() * 51) + 50,
