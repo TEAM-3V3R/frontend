@@ -8,3 +8,10 @@ export const getReport = (chatId) => {
         url: API_REPORT.report(chatId),
     });
 };
+
+export const postReports = (chatId) => {
+    return instance({
+        method: 'POST',
+        url: API_REPORT.reports(chatId),
+    })
+}

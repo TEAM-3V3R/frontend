@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { postImageDownload } from '@/api/chatAPI';
 import ImageSendModal from '../ImageSend';
 
-function ImageSaveModal({ chatId, onClose }) {
+function ImageSaveModal({ chatId, onClose, onConfirmEnd }) {
   const [selectValue, setSelectValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const handleSelectChange = (e) => {
@@ -42,6 +42,9 @@ function ImageSaveModal({ chatId, onClose }) {
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
+      }
+      if (typeof onConfirmEnd === 'function') {
+        await onConfirmEnd();
       }
     } catch (error) {
       console.error('Error saving image:', error);
