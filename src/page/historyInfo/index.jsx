@@ -54,7 +54,9 @@ function HistoryInfo() {
         <div className={styles.main}>
           <div className={styles.header}>
             <div className={styles.front}>
-              <h1 className={styles.title}>채팅 제목</h1>
+              <h1 className={styles.title}>
+                {historyInfoData?.chatTitle}
+              </h1>
               <Keyword
                 keyword={keyword}
                 isSelected={true}
