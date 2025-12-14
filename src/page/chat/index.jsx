@@ -144,7 +144,7 @@ function Chat() {
         },
         selectedKeyword
       );
-      const imageUrl = res.data.data.data[0].url;
+      const imageUrl = res.data.data.data[0].b64_json;
       const promptId = res.data.data.promptId;
       if (res.status === 200) {
         setChatInfo((prev) => ({
@@ -292,35 +292,35 @@ function Chat() {
                   />
                 ))}
               </div>
-              <div
-                className={styles.infoWrapper}
-                onMouseEnter={() => setIsPromptPopoverOpen(true)}
-                onMouseLeave={() => setIsPromptPopoverOpen(false)}
-              >
+              <div className={styles.infoWrapper}>
                 <button
                   className={styles.infoCircle}
                   title="프롬프트 예시 보기"
                   aria-label="프롬프트 예시 열기"
+                  onMouseEnter={() => setIsPromptPopoverOpen(true)}
+                  onMouseLeave={() => setIsPromptPopoverOpen(false)}
                 >
                   i
                 </button>
                 <Keyword
                   keyword="채팅종료"
                   onClick={() => {
-                    if (!chatInfo?.isFinished) {
-                      setIsChatEndedModal(true);
-                    }
+                    if (chatInfo?.isFinished) return;
+                    setIsChatEndedModal(true);
                   }}
                   isSelected={chatInfo?.isFinished ? false : true}
                   bgColor="red"
                   style={{
                     cursor: chatInfo?.isFinished ? 'not-allowed' : 'pointer',
+                    opacity: chatInfo?.isFinished ? 0.5 : 1,
+                    pointerEvents: chatInfo?.isFinished ? 'none' : 'auto',
                   }}
                 />
                 {isChatEndedModal && (
                   <ImageSaveModal
                     chatId={currentChat}
                     onClose={() => setIsChatEndedModal(false)}
+                    onConfirmEnd={handleEndChatConfirm}
                   />
                 )}
 
@@ -330,6 +330,7 @@ function Chat() {
                     role="dialog"
                     aria-label="프롬프트 예시 팝오버"
                     onMouseEnter={() => setIsPromptPopoverOpen(true)}
+                    onMouseLeave={() => setIsPromptPopoverOpen(false)}
                   >
                     <div className={styles.popoverHeader}>
                       <strong>프롬프트 예시</strong>
