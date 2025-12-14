@@ -36,6 +36,29 @@ function Chat() {
   const [isChatEndedModal, setIsChatEndedModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isPromptInfoOpen, setIsPromptInfoOpen] = useState(false);
+
+  const [isPromptPopoverOpen, setIsPromptPopoverOpen] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState(null);
+
+  const promptExamples = [
+    '옛날 한국 전통 산수화 스타일의 풍경, 안개 낀 산과 잔잔한 물결, 섬세한 먹 효과',
+    '동양화 느낌의 어해도, 금박을 사용한 장식적 요소와 섬세한 붓터치',
+    '불교 탱화 스타일, 강렬한 색채와 상징적 인물 배치, 세밀한 디테일 강조',
+    '현대적 해석의 산수도, 미니멀한 색상 팔레트와 부드러운 명암',
+  ];
+
+  const handleCopy = async (text, i) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(i);
+      setTimeout(() => setCopiedIndex(null), 1500);
+    } catch (err) {
+      console.error('복사 실패', err);
+      alert('복사에 실패했습니다. 브라우저 권한을 확인해주세요.');
+    }
+  };
+
   const handleEndChatConfirm = async () => {
     try {
       await postReports(currentChat);
@@ -269,26 +292,65 @@ function Chat() {
                   />
                 ))}
               </div>
-              <Keyword
-                keyword="채팅종료"
-                onClick={() => {
-                  if (!chatInfo?.isFinished) {
-                    setIsChatEndedModal(true);
-                  }
-                }}
-                isSelected={chatInfo?.isFinished ? false : true}
-                bgColor="red"
-                style={{
-                  cursor: chatInfo?.isFinished ? 'not-allowed' : 'pointer',
-                }}
-              />
-              {isChatEndedModal && (
-                <ImageSaveModal
-                  chatId={currentChat}
-                  onClose={() => setIsChatEndedModal(false)}
-                  onConfirmEnd={handleEndChatConfirm}
+              <div
+                className={styles.infoWrapper}
+                onMouseEnter={() => setIsPromptPopoverOpen(true)}
+                onMouseLeave={() => setIsPromptPopoverOpen(false)}
+              >
+                <button
+                  className={styles.infoCircle}
+                  title="프롬프트 예시 보기"
+                  aria-label="프롬프트 예시 열기"
+                >
+                  i
+                </button>
+                <Keyword
+                  keyword="채팅종료"
+                  onClick={() => {
+                    if (!chatInfo?.isFinished) {
+                      setIsChatEndedModal(true);
+                    }
+                  }}
+                  isSelected={chatInfo?.isFinished ? false : true}
+                  bgColor="red"
+                  style={{
+                    cursor: chatInfo?.isFinished ? 'not-allowed' : 'pointer',
+                  }}
                 />
-              )}
+                {isChatEndedModal && (
+                  <ImageSaveModal
+                    chatId={currentChat}
+                    onClose={() => setIsChatEndedModal(false)}
+                  />
+                )}
+
+                {isPromptPopoverOpen && (
+                  <div
+                    className={styles.popover}
+                    role="dialog"
+                    aria-label="프롬프트 예시 팝오버"
+                    onMouseEnter={() => setIsPromptPopoverOpen(true)}
+                  >
+                    <div className={styles.popoverHeader}>
+                      <strong>프롬프트 예시</strong>
+                    </div>
+                    <div className={styles.promptExamples}>
+                      {promptExamples.map((p, i) => (
+                        <div key={i} className={styles.promptExample}>
+                          <span style={{ flex: 1, marginRight: 8 }}>{p}</span>
+                          <button
+                            className={styles.copyBtn}
+                            onClick={() => handleCopy(p, i)}
+                            aria-label={`예시 ${i + 1} 복사`}
+                          >
+                            {copiedIndex === i ? '복사됨' : '복사'}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className={styles.chatviewContent}>
               {chatInfo?.prompts?.map((prompt, index) => ( // prompts에도 ?. 추가
