@@ -44,14 +44,17 @@ function AI() {
 
         setReportData(data);
 
+        const fluency0 = data?.fluencySkc?.[0];        
+        const persistence0 = data?.persistenceSrf?.[0]; 
+
         // 유연성, 창의성 세부 점수
         setDetailScore({
-          'sentence flex': data?.fluencySkc?.fluency_s ?? 0,
-          'keyword flex': data?.fluencySkc?.fluency_k ?? 0,
-          'idea flex': data?.fluencySkc?.fluency_c ?? 0,
-          'modifier amount': data?.persistenceSrf?.persistence_s ?? 0,
-          'modifier density': data?.persistenceSrf?.persistence_r ?? 0,
-          'clustering density': data?.persistenceSrf?.persistence_f ?? 0,
+          'sentence flex': fluency0?.fluency_s ?? 0,
+          'keyword flex': fluency0?.fluency_k ?? 0,
+          'idea flex': fluency0?.fluency_c ?? 0,
+          'modifier amount': persistence0?.persistence_s ?? 0,
+          'modifier density': persistence0?.persistence_r ?? 0,
+          'clustering density': persistence0?.persistence_f ?? 0,
         });
       } catch (e) {
         console.error('getReport 실패:', e);
