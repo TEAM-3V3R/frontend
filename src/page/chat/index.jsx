@@ -25,6 +25,12 @@ const keywords = [
   { keyword: '탱화', bgColor: 'red' },
 ];
 
+const truncateText = (text, limit = 5) => {
+  const s = (text ?? '').toString().trim();
+  if (!s) return '';
+  return s.length > limit ? s.slice(0, limit) + '...' : s;
+};
+
 function Chat() {
   const userNo = localStorage.getItem('userNo');
   const [selectedKeyword, setSelectedKeyword] = useState('');
@@ -264,11 +270,12 @@ function Chat() {
                   setIsChatEndedModal(false);
                 }}
                 isSelected={currentChat === item.chatId}
-                title={item.chatTitle || item.promptContent}
+                title={truncateText(item.chatTitle || item.promptContent)}
                 onChange={(newTitle) =>
                   handleChangeTitle(item.chatTitle, newTitle, item.chatId)
                 }
               />
+
             ))}
           </div>
         </div>
